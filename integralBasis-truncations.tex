@@ -1,0 +1,227 @@
+%\usepackage[draft]{hyperref}
+%\newcommand{\PE}{{\mathcal P}(x)}
+%\newcommand{\PEP}{{\mathcal P}[x]}
+%\usepackage{epsfig}
+%\usepackage{pstricks}
+%\usepackage{pst-node}
+%\usepackage{pst-tree}
+%\usepackage{pst-grad}
+%\usepackage{pst-plot}
+%\DeclareMathOperator{\IntegralElementSimple}{IntegralElementSimple}
+%\DeclareMathOperator{\LocalIntegralBasisElement}{LocalIntegralBasisElement}
+
+\documentclass[a4paper,11pt]{amsart}%
+\usepackage{multicol}
+\usepackage{bm}
+\usepackage[utf8x]{inputenc}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{synttree}
+\usepackage{amsthm}
+\usepackage{algorithm}
+%\usepackage{algpseudocode}
+\usepackage[noend]{algorithmic}
+\usepackage{todonotes}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{hyperref}%
+\usepackage{enumitem}
+\setcounter{MaxMatrixCols}{30}
+%TCIDATA{OutputFilter=latex2.dll}
+%TCIDATA{Version=5.00.0.2570}
+%TCIDATA{LastRevised=Wednesday, February 26, 2014 20:49:07}
+%TCIDATA{<META NAME="GraphicsSave" CONTENT="32">}
+%TCIDATA{<META NAME="SaveForMode" CONTENT="1">}
+\allowdisplaybreaks
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\theoremstyle{definition}
+\theoremstyle{plain}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{theorem}[defn]{Theorem}
+\newtheorem{proposition}[defn]{Proposition}
+\newtheorem{lemma}[defn]{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}[defn]{Remark}
+\newtheorem{example}[defn]{Example}
+\newtheorem{notation}[defn]{Notation}
+\DeclareMathOperator{\LocalIntegralBasis}{LocalIntegralBasis}
+\DeclareMathOperator{\IntegralElement}{IntegralElement}
+\DeclareMathOperator{\IntegralBasisIterative}{\mathtt{IntegralBasisIterative}}
+\DeclareMathOperator{\TruncatedFactor}{\mathtt{IntegralBasisElement}}
+\DeclareMathOperator{\Splitting}{Splitting}
+\DeclareMathOperator{\BlockSplitting}{BlockSplitting}
+\DeclareMathOperator{\SegmentSplitting}{SegmentSplitting}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Sing}{Sing}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\Int}{Int}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\degree}{degree}
+\DeclareMathOperator{\rad}{rad}
+\DeclareMathOperator{\Ker}{ker}
+\DeclareMathOperator{\TQR}{Q}
+\newcommand{\singular}{{\sc Singular}}
+\newcommand{\maple}{{\sc Maple}}
+\newcommand{\cc}{{\mathbf c}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\Px}{{\mathcal{P}_X}}
+
+\usepackage{accents}
+\newcommand{\dbtilde}[1]{\accentset{\approx}{#1}}
+\newcommand{\vardbtilde}[1]{\tilde{\raisebox{0pt}[0.85\height]{$\tilde{#1}$}}}
+
+
+\begin{document}
+\title[Good truncations for computing integral bases]{Good truncations for computing integral bases}
+\author{D. Basson, J. Boehm, S. Laplagne, M. Marais}
+
+\begin{abstract}
+We provide good truncation bound that speed up the computation of integral basis.
+\end{abstract}
+\maketitle
+
+\section{Introduction}
+\label{section:introduction}
+
+Integral basis are very useful in real life.
+
+Given a polynomial $f \in K[x,y]$ monic in $Y$, we wish to compute the local contribution to the integral basis at the origin or the local integral basis at the origin.
+
+
+\section{The determinacy}
+\label{section:directApproach}
+
+In this section we show:
+\begin{enumerate}
+\item An upper bound for the determinacy can be found fast reducing the polynomial modulo any prime number $p$.
+\item If we truncate the polynoial $f$ by standard degree at the determinacy, the characteristic exponents of $f$ will not change.
+\item The integrality exponent of $f$ can be computed from the characteristic exponents, so we can compute very fast the integrality exponent.
+\end{enumerate}
+
+Remark: the coefficients of the Puiseux expansions might change, but in all examples we tried, the coefficients don't change after truncation.
+
+\section{Local contribution to the integral basis at the origin}
+
+In this section we focus on the computation of the local contribution at the origin.
+
+In this case, by \cite[Proposition 23]{poteaux2021} we can truncate the powers of $X$ at order two times the integrality exponent and we will get the correct integral basis.
+
+\section{Local integral basis at the origin}
+
+When we are interested in the local integral basis at the origin we can also truncate powers of $Y$.
+
+Applying \cite[Proposition 23]{poteaux2021}  in terms of $Y$ we obtain that the factors at the origin are uniquely determined and they are the same factors as the factors obtained when we develope the factorization in terms of $X$, so we are able to recover the correct information.
+
+The factor $g_0$ however corresponds to the branches of $f$ at $Y = 0$ and the factor $f_0$ corresponds to the branches of $f$ at $X = 0$, so we cannot recover the Puiseux expansions of $f_0$ from the Puiseux expansions of $g_0$.
+
+Hence when we apply a truncation in $Y$ we can expect to compute correctly the local integral basis but not the local contribution.
+
+
+
+\section{Timings}
+
+We get very good timings.
+
+\bibliographystyle{plain}
+\bibliography{mybib}
+
+
+
+\end{document}
+
+
+%\begin{remark}
+%We always can find an integral basis of type
+%\[
+%1,\frac{p_{1}}{x^{e_{1}}},\dots,\frac{p_{n-1}}{x^{e_{n-1}}}.
+%\]
+%\todo{fix this: if only singularities with $x = 0$ occur. Move to a later section.}
+%\end{remark}
+
+\begin{remark}
+Let $L=\overline{K}$ and let $A=L[x,y]=L[X,Y]/\left\langle f\right\rangle $ be
+denote the coordinate ring of $C$ with $f\in K[X][Y]$ monic in $Y$ of degree
+$n$. Let $a_{1},...,a_{s}\in L$ denote the $x$-coordinates of the
+singularities of $C$. Then there are $p_{i}\in K[X][Y]$ with $\deg_{Y}%
+(p_{i})=i$ for all $i$ and $e_{i,j}\in\mathbb{N}_{0}$ with $e_{i,j}\geq
+e_{i-1,j}$, such that, as an $L[X]$-module%
+\[
+\bar{A}=_{L[X]}\left\langle \frac{\bar{p}_{0}}{\bar{q}_{0}},\ldots,\frac
+{\bar{p}_{n-1}}{\bar{q}_{n-1}}\right\rangle \subseteq
+Q(A)=L(X)[Y]/\left\langle f\right\rangle
+\]
+with%
+\[
+q_{i}=%
+%TCIMACRO{\dprod \limits_{j=1}^{s}}%
+%BeginExpansion
+{\displaystyle\prod\limits_{j=1}^{s}}
+%EndExpansion
+(X-a_{j})^{e_{i,j}}\in K[X]\text{.}%
+\]
+
+
+If $a_{1}=0$ and $P=\left\langle x,y\right\rangle $ then, as an
+$L[X]_{\left\langle X\right\rangle }$-module,%
+\[
+\overline{A_{P}}=\left\langle \frac{\bar{p}_{0}}{x^{e_{0,1}}},\ldots
+,\frac{\bar{p}_{n-1}}{x^{e_{n-1,1}}}\right\rangle
+\]
+and%
+\[
+\overline{\widehat{A_{P}}}=\left\langle \frac{\bar{p}_{0}}{x^{e_{0,1}}}%
+,\ldots,\frac{\bar{p}_{n-1}}{x^{e_{n-1,1}}}\right\rangle \subseteq
+Q(A_{P})\otimes_{A_{P}}\widehat{A_{P}}%
+\]
+as an $L[[X]]$-module.
+\end{remark}
+
+\begin{proof}
+By van Hoeij's algorithm the claim for $\bar{A}$ is clear. The second claim
+follows since $\_\otimes_{A}A_{P}$ is right exact, $\overline{A_{P}}%
+=\overline{A}_{P}$, and $x-a$ is a unit in $\overline{A_{P}}$ if $a\neq0$. The
+third claim follows since $\_\otimes_{A_{P}}\widehat{A_{P}}$ is right exact
+and $\widehat{\overline{A_{P}}}=\overline{\widehat{A_{P}}}$, since the
+semilocal ring $\overline{A_{P}}$ is excellent.
+\end{proof}
+
+
+
+
+%% Puiseux blocks with more than one class
+
+\begin{remark}
+As we have already mentioned, when $f$ has more than one conjugacy class of expansions in a Puiseux block, Algorithm \ref{algo:iterative} cannot be applied to determine which expansions to choose in each class.
+The reason why this algorithm does not work is that if $\Gamma$ and $H$ are two conjugacy classes in the same Puiseux block, the order of $\gamma - \eta$, $\gamma \in \Gamma$ and $\eta \in H$, depends on which expansion we have chosen in each class.
+\end{remark}
+
+\begin{example}
+Consider a polynomial $f$ with Puiseux expansions
+\begin{align*}
+\gamma_1 &= x^{3/2} + x^2 + \dots \\
+\gamma_2 &= - x^{3/2} + x^2 + \dots \\
+\gamma_3 &= x^{3/2} + x^3 + \dots \\
+\gamma_4 &= -x^{3/2} + x^3 + \dots
+\end{align*}
+where $\{\gamma_1, \gamma_2\}$ is a conjugacy class and $\{\gamma_3, \gamma_4\}$ is another conjugacy class, and both classes are in the same block.
+
+Then
+$$\gamma_1 - \gamma_3 = x^2 - x^3 + \dots$$
+has order 2 but
+$$\gamma_1 - \gamma_4 = 2 x^{3/2} + x^2 - x^3 + \dots$$
+has order 3/2.
+\end{example}
+
+\begin{remark}
+For this case we propose a different algorithm using polynomials over the ground field as building blocks.
+%, instead of considering the number of Puiseux expansions as before.
+This algorithm can be applied in all cases, and in practice it is very similar to Algorithm \ref{algo:exhaustive}. However, with this approach we cannot apply an optimized strategy as in Algorithm \ref{algo:iterative} and hence it can be slow when there are many conjugacy classes.
+\end{remark}
+
