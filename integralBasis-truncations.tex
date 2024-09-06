@@ -72,6 +72,10 @@
 \newcommand{\Z}{{\mathbb Z}}
 \newcommand{\C}{{\mathbb C}}
 \newcommand{\Px}{{\mathcal{P}_X}}
+\newcommand{\bigO}{\mathcal{O}}
+\newcommand\ct[1]{\text{\rmfamily\upshape #1}}
+\newcommand{\IntExpX}{\ct{IntExp}_X}
+\newcommand{\IntExpY}{\ct{IntExp}_Y}
 
 \usepackage{accents}
 \newcommand{\dbtilde}[1]{\accentset{\approx}{#1}}
@@ -101,7 +105,7 @@ Given a polynomial $f \in K[x,y]$ monic in $Y$, we wish to compute the local con
 In this section we show:
 \begin{enumerate}
 \item An upper bound for the determinacy can be found fast reducing the polynomial modulo any prime number $p$.
-\item If we truncate the polynoial $f$ by standard degree at the determinacy, the characteristic exponents of $f$ will not change.
+\item If we truncate the polynomial $f$ by standard degree at the determinacy, the characteristic exponents of $f$ will not change.
 \item The integrality exponent of $f$ can be computed from the characteristic exponents, so we can compute very fast the integrality exponent.
 \end{enumerate}
 
@@ -111,18 +115,100 @@ Remark: the coefficients of the Puiseux expansions might change, but in all exam
 
 In this section we focus on the computation of the local contribution at the origin.
 
-In this case, by \cite[Proposition 23]{poteaux2021} we can truncate the powers of $X$ at order two times the integrality exponent and we will get the correct integral basis.
+We use the following result.
+
+\begin{proposition}\label{prop:factors}(See \cite[Proposition 23]{poteaux2021}.)
+Let $F \in K[[X]][Y]$, separable of degree $d$. Suppose given a modular factorisation
+\begin{equation}\label{factorization}
+F \equiv  F_0 F_1 \dots F_s \mod X^{N_0}, \ N_0 > 2\kappa
+\end{equation}
+where $F_0 \in K[[X]][Y]$ is a unit and for all $i \ge 1$ either $F_i$ or its reciprocal polynomial $\tilde F_i$ is monic, and
+$$
+\kappa = \kappa(F_0,..., F_s) := \max_{I, J} \kappa(F_I, F_J),
+$$
+the maximum of the lifting orders being taken over all disjoint subsets $I, J \subset {0,\dots,s}$,
+with $F_I = \prod_{i\in I} F_i$. Then there exists uniquely determined analytic factors $F_0^*, F_1^*,\dots, F_k^*$ such that $F = F_0^* F_1^* \cdots F_k^*$, where
+$$
+F_i^* \equiv F_i \mod X^{N_0−\kappa}.
+$$
+Moreover, starting from (\ref{factorization}, we can compute the $F_i^\star$ up to any precision $N \ge N_0 − \kappa$ in $\bigO(dN)$ operations over $K$.
+\end{proposition}
+
+This proposition says that if we truncate $f$ at precision $n$ in $X$ and we factorize the truncated polynomial $\bar f$ in $K[[X]][Y]$, we will get the factors of $f$ with precision $n - \kappa$.
+
+We are interested in computing the factors with precision at least equal to the integrality exponent in $X$ of $f$, we call this number $\IntExpX$. That is, we need
+$n - \kappa \ge \IntExpX$.
+
+In that paper the authors provide the bound $\kappa \le \delta / 2$, where $\delta = 2 \IntExpX$, so $\kappa \le \IntExpX$ and it is enough for us to consider $n \ge 2 \IntExpX$.
+
+For the computation of the integral basis we also need the singular part of the Puiseux expansions. If we want to compute the Puiseux expansions from the factors $f_1, \dots, f_s$, we would need to compute the factors with precision higher than the integrality exponent.
+
+However if we compute the Puiseux expansions from $\bar f$, the same proposition says that we will obtain the Puiseux expansions with precision at least $\IntExpX$, and hence the singular part will be correctly computed.
+
+Putting everything together, we can truncate the powers of $X$ of $f$ at order two times the integrality exponent and we will be able to compute the correct factors and Puisuex expansions up to the integrality exponent and hence we will compute the correct integral basis.
 
 \section{Local integral basis at the origin}
 
 When we are interested in the local integral basis at the origin we can also truncate powers of $Y$.
 
-Applying \cite[Proposition 23]{poteaux2021}  in terms of $Y$ we obtain that the factors at the origin are uniquely determined and they are the same factors as the factors obtained when we develope the factorization in terms of $X$, so we are able to recover the correct information.
+One possible approach is the following:
+\begin{enumerate}
+\item Applying again \cite[Proposition 23]{poteaux2021}  in terms of $Y$ with high enough precision, we obtain that the factors at the origin are uniquely determined and they are the same factors as the factors obtained when we develop the factorization in terms of $X$, so we are able to recover the correct information.
+\item The factor $g_0$ however corresponds to the branches of $f$ at $Y = 0$ and the factor $f_0$ corresponds to the branches of $f$ at $X = 0$, so we cannot recover the Puiseux expansions of $f_0$ from the Puiseux expansions of $g_0$.
+\item Hence when we apply a truncation in $Y$ we can expect to compute correctly the local integral basis but not the local contribution.
+\end{enumerate}
 
-The factor $g_0$ however corresponds to the branches of $f$ at $Y = 0$ and the factor $f_0$ corresponds to the branches of $f$ at $X = 0$, so we cannot recover the Puiseux expansions of $f_0$ from the Puiseux expansions of $g_0$.
+We now formalize these ideas and calculate the required precision. For this, we need to be able to go from Puiseux expansions in $X$ to Puiseux expansions in $Y$.
 
-Hence when we apply a truncation in $Y$ we can expect to compute correctly the local integral basis but not the local contribution.
+\begin{enumerate}
+\item We start with a polynomial $F$ with analytic factorization
+$$
+F = F_0^* F_1^* \dots F_s^*$$
+($F_i^* \in K[[X]][Y]$ and $F_0^*$ is the unit corresponding to the branches outside the origin).
 
+\item Let $\overline{F}^X$ be the truncation of $F$ modulo $X^{N_0}$, for some $N_0 \in \N$. Applying any factorization algorithm to $\overline{F}^X$ (Newton-Puiseux algorithm or Hensel lifting) we can obtain a factorization
+$$
+F \equiv \overline{F}^X \equiv  F_0 F_1 \dots F_s \mod X^{N_0}.
+$$
+
+
+\item For this factorization, Proposition \ref{prop:factors} says that 
+$$F_i \equiv F_i^* \mod X^{N_0 - \kappa}$$
+for $i > 0$.
+
+\item Now we truncate in $Y$. Let $\overline{F}^{XY}$ be the truncation of $\overline{F}^X$ modulo $Y^{N_0}$. We can factorize this polynomial in $K[[X]][Y]$ as
+$$
+\overline{F}^{XY} \equiv  \tilde{F}_0 \tilde{F}_1 \dots \tilde{F}_s \mod X^{N_0},
+$$
+and we want to know if $\tilde{F}_i \equiv F_i \mod X^{N_0}$ for $i > 0$ (we cannot expect $\tilde{F}_0 \equiv F_0 \mod X^{N_0}$).
+
+\item Applying again Proposition \ref{prop:factors} in $K[[Y]][X]$ to $\overline{F}^X$ we obtain that if we factorize
+$$
+\overline{F}^{X} \equiv \overline{F}^{XY} \equiv  G_0 G_1 \dots G_s \mod Y^{N_0}
+$$
+then 
+$$G_i \equiv G_i^* \mod Y^{N_0 - \kappa}$$
+for all $i$, where $G_i^*$ are the analytic factors of $\overline{F}^{X} \in K[[Y]][X]$.
+
+\item Now the key argument is: there is a reparametrization (or coordinates change) $(\alpha(X,Y), \beta(X,Y))$ that will transform $G_i^*$, $1 \le i \le s$, into the analytic factors $\bar F_i^*$ of $\overline{F}^{X} \in K[[X]][Y]$, that is
+$$    
+G_i^*(\alpha(X,Y), \beta(X,Y)) \equiv \bar F_i^* \equiv F_i \mod X^{N_0-\kappa}.
+$$
+    
+We have to show that if we apply this same reparametrization to $G_i$ we will obtain
+$$G_i(\alpha(X,Y), \beta(X,Y)) \equiv F_i \mod X^{N_0 - \kappa}.$$
+\end{enumerate}
+
+
+
+%We apply Proposition \ref{prop:factors} considering $F \in K[[Y]][X]$.
+%We take $N > \max{2 \IntExpX, 2 \IntExpY}$. Then $N$ satisfies the hypothesis (\ref{factorization}) so if we factorize $\overline{f}^Y$, we obtain factors $G_0, G_1, \dots, G_s$ such that  $$F \equiv G_0 G_1 \dots G_s \mod X^N$$
+%and $G_i$ agrees with the factors of $F$ up to degree at least $\max{\IntExpX, \IntExpY}$.
+%
+%The question is now how to go from $G_i$ to $F_i$.
+%For this purpose, we fix $i$ and consider the factorization
+%$G_i = (X - \eta_1(Y)) \dots (X - \eta_n(Y))$,
+%where $\eta_1(Y), \dots, \eta_n(Y)$ are the Puiseux expansions of $G_i$.
 
 
 \section{Timings}
@@ -135,93 +221,3 @@ We get very good timings.
 
 
 \end{document}
-
-
-%\begin{remark}
-%We always can find an integral basis of type
-%\[
-%1,\frac{p_{1}}{x^{e_{1}}},\dots,\frac{p_{n-1}}{x^{e_{n-1}}}.
-%\]
-%\todo{fix this: if only singularities with $x = 0$ occur. Move to a later section.}
-%\end{remark}
-
-\begin{remark}
-Let $L=\overline{K}$ and let $A=L[x,y]=L[X,Y]/\left\langle f\right\rangle $ be
-denote the coordinate ring of $C$ with $f\in K[X][Y]$ monic in $Y$ of degree
-$n$. Let $a_{1},...,a_{s}\in L$ denote the $x$-coordinates of the
-singularities of $C$. Then there are $p_{i}\in K[X][Y]$ with $\deg_{Y}%
-(p_{i})=i$ for all $i$ and $e_{i,j}\in\mathbb{N}_{0}$ with $e_{i,j}\geq
-e_{i-1,j}$, such that, as an $L[X]$-module%
-\[
-\bar{A}=_{L[X]}\left\langle \frac{\bar{p}_{0}}{\bar{q}_{0}},\ldots,\frac
-{\bar{p}_{n-1}}{\bar{q}_{n-1}}\right\rangle \subseteq
-Q(A)=L(X)[Y]/\left\langle f\right\rangle
-\]
-with%
-\[
-q_{i}=%
-%TCIMACRO{\dprod \limits_{j=1}^{s}}%
-%BeginExpansion
-{\displaystyle\prod\limits_{j=1}^{s}}
-%EndExpansion
-(X-a_{j})^{e_{i,j}}\in K[X]\text{.}%
-\]
-
-
-If $a_{1}=0$ and $P=\left\langle x,y\right\rangle $ then, as an
-$L[X]_{\left\langle X\right\rangle }$-module,%
-\[
-\overline{A_{P}}=\left\langle \frac{\bar{p}_{0}}{x^{e_{0,1}}},\ldots
-,\frac{\bar{p}_{n-1}}{x^{e_{n-1,1}}}\right\rangle
-\]
-and%
-\[
-\overline{\widehat{A_{P}}}=\left\langle \frac{\bar{p}_{0}}{x^{e_{0,1}}}%
-,\ldots,\frac{\bar{p}_{n-1}}{x^{e_{n-1,1}}}\right\rangle \subseteq
-Q(A_{P})\otimes_{A_{P}}\widehat{A_{P}}%
-\]
-as an $L[[X]]$-module.
-\end{remark}
-
-\begin{proof}
-By van Hoeij's algorithm the claim for $\bar{A}$ is clear. The second claim
-follows since $\_\otimes_{A}A_{P}$ is right exact, $\overline{A_{P}}%
-=\overline{A}_{P}$, and $x-a$ is a unit in $\overline{A_{P}}$ if $a\neq0$. The
-third claim follows since $\_\otimes_{A_{P}}\widehat{A_{P}}$ is right exact
-and $\widehat{\overline{A_{P}}}=\overline{\widehat{A_{P}}}$, since the
-semilocal ring $\overline{A_{P}}$ is excellent.
-\end{proof}
-
-
-
-
-%% Puiseux blocks with more than one class
-
-\begin{remark}
-As we have already mentioned, when $f$ has more than one conjugacy class of expansions in a Puiseux block, Algorithm \ref{algo:iterative} cannot be applied to determine which expansions to choose in each class.
-The reason why this algorithm does not work is that if $\Gamma$ and $H$ are two conjugacy classes in the same Puiseux block, the order of $\gamma - \eta$, $\gamma \in \Gamma$ and $\eta \in H$, depends on which expansion we have chosen in each class.
-\end{remark}
-
-\begin{example}
-Consider a polynomial $f$ with Puiseux expansions
-\begin{align*}
-\gamma_1 &= x^{3/2} + x^2 + \dots \\
-\gamma_2 &= - x^{3/2} + x^2 + \dots \\
-\gamma_3 &= x^{3/2} + x^3 + \dots \\
-\gamma_4 &= -x^{3/2} + x^3 + \dots
-\end{align*}
-where $\{\gamma_1, \gamma_2\}$ is a conjugacy class and $\{\gamma_3, \gamma_4\}$ is another conjugacy class, and both classes are in the same block.
-
-Then
-$$\gamma_1 - \gamma_3 = x^2 - x^3 + \dots$$
-has order 2 but
-$$\gamma_1 - \gamma_4 = 2 x^{3/2} + x^2 - x^3 + \dots$$
-has order 3/2.
-\end{example}
-
-\begin{remark}
-For this case we propose a different algorithm using polynomials over the ground field as building blocks.
-%, instead of considering the number of Puiseux expansions as before.
-This algorithm can be applied in all cases, and in practice it is very similar to Algorithm \ref{algo:exhaustive}. However, with this approach we cannot apply an optimized strategy as in Algorithm \ref{algo:iterative} and hence it can be slow when there are many conjugacy classes.
-\end{remark}
-
