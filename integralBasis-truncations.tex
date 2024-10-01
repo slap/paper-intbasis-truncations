@@ -10,7 +10,7 @@
 %\DeclareMathOperator{\IntegralElementSimple}{IntegralElementSimple}
 %\DeclareMathOperator{\LocalIntegralBasisElement}{LocalIntegralBasisElement}
 
-\documentclass[a4paper,11pt]{amsart}%
+\documentclass[a4paper,11pt,reqno]{amsart}%
 \usepackage{multicol}
 \usepackage{bm}
 \usepackage[utf8x]{inputenc}
@@ -84,7 +84,7 @@
 
 \begin{document}
 \title[Good truncations for computing integral bases]{Good truncations for computing integral bases}
-\author{D. Basson, J. Boehm, S. Laplagne, M. Marais}
+%\author{D. Basson, J. Boehm, S. Laplagne, M. Marais}
 
 \begin{abstract}
 We provide good truncation bound that speed up the computation of integral basis.
@@ -158,46 +158,97 @@ One possible approach is the following:
 \item Hence when we apply a truncation in $Y$ we can expect to compute correctly the local integral basis but not the local contribution.
 \end{enumerate}
 
-We now formalize these ideas and calculate the required precision. For this, we need to be able to go from Puiseux expansions in $X$ to Puiseux expansions in $Y$.
+We now formalize these ideas and calculate the required precision. For this, we need to be able to go from Puiseux expansions in $X$ to Puiseux expansions in $Y$ ($N_0$ and $\kappa$ are the numbers to be determined, and they are possibly different for $X$-truncations and $Y$-truncations).
 
 \begin{enumerate}
-\item We start with a polynomial $F$ with analytic factorization
+\item We start with a polynomial $F \in K[X,Y]$ with analytic factorization in $K[[X]][Y]$:
 $$
-F = F_0^* F_1^* \dots F_s^*$$
-($F_i^* \in K[[X]][Y]$ and $F_0^*$ is the unit corresponding to the branches outside the origin).
+F = F_0^* F_1^* \dots F_s^*,$$
+where $F_i^* \in K[[X]][Y]$ and $F_0^*$ is the unit corresponding to the branches outside the origin). Let $d_i$ be the degree in $Y$ of $F_i^*$ and let $e_i$ be the largest denominator of the Puiseux expansions of $F_i^*$.
 
-\item Let $\overline{F}^X$ be the truncation of $F$ modulo $X^{N_0}$, for some $N_0 \in \N$. Applying any factorization algorithm to $\overline{F}^X$ (Newton-Puiseux algorithm or Hensel lifting) we can obtain a factorization
-$$
-F \equiv \overline{F}^X \equiv  F_0 F_1 \dots F_s \mod X^{N_0}.
-$$
+\item If we have a factorization
+\begin{equation} \label{FXfactors}
+F \equiv  F_0 F_1 \dots F_s \mod X^{N_0},
+\end{equation}
+then by Proposition \ref{prop:factors}, $F_i \equiv F_i^* \mod X^{N_0 - \kappa}$.
 
 
-\item For this factorization, Proposition \ref{prop:factors} says that 
-$$F_i \equiv F_i^* \mod X^{N_0 - \kappa}$$
-for $i > 0$.
+\item Now we truncate in $Y$. Let $\overline{F}^{Y}$ be the truncation of $F$ modulo $Y^{N_0}$. We can factorize this polynomial in $K[[X]][Y]$ as
+$$
+\overline{F}^{Y} \equiv  {H}_0 {H}_1 \dots {H}_s \mod X^{N_0},
+$$
+and we want to know if ${H}_i \equiv F^*_i \mod X^{N_0 - \kappa}$ for $i > 0$ (we cannot expect $H_0 \equiv F_0^* \mod X^{N_0 - \kappa}$).
 
-\item Now we truncate in $Y$. Let $\overline{F}^{XY}$ be the truncation of $\overline{F}^X$ modulo $Y^{N_0}$. We can factorize this polynomial in $K[[X]][Y]$ as
-$$
-\overline{F}^{XY} \equiv  \tilde{F}_0 \tilde{F}_1 \dots \tilde{F}_s \mod X^{N_0},
-$$
-and we want to know if $\tilde{F}_i \equiv F_i \mod X^{N_0}$ for $i > 0$ (we cannot expect $\tilde{F}_0 \equiv F_0 \mod X^{N_0}$).
+\item We can also factorize $\overline{F}^{Y}$ in $K[[Y]][X]$: 
+$$\overline{F}^{Y} \equiv G_0 G_1 \dots G_s \mod Y^{N_0}.$$
 
-\item Applying again Proposition \ref{prop:factors} in $K[[Y]][X]$ to $\overline{F}^X$ we obtain that if we factorize
-$$
-\overline{F}^{X} \equiv \overline{F}^{XY} \equiv  G_0 G_1 \dots G_s \mod Y^{N_0}
-$$
-then 
+\item Applying Proposition \ref{prop:factors} to ${F}$ in $K[[Y]][X]$  we obtain that
 $$G_i \equiv G_i^* \mod Y^{N_0 - \kappa}$$
-for all $i$, where $G_i^*$ are the analytic factors of $\overline{F}^{X} \in K[[Y]][X]$.
+where $G_i^*$ are the analytic factors of $F$ in $K[[Y]][X]$.
 
-\item Now the key argument is: there is a reparametrization (or coordinates change) $(\alpha(X,Y), \beta(X,Y))$ that will transform $G_i^*$, $1 \le i \le s$, into the analytic factors $\bar F_i^*$ of $\overline{F}^{X} \in K[[X]][Y]$, that is
-$$    
-G_i^*(\alpha(X,Y), \beta(X,Y)) \equiv \bar F_i^* \equiv F_i \mod X^{N_0-\kappa}.
+By the same argument $G_i$ agrees with the analytic factors of $\overline{F}^{Y} \mod Y^{N_0 - \kappa}$.
+Hence: the analytic factors in $K[[Y]][X]$ of $F$ and $\overline{F}^{Y}$ are the same $\mod Y^{N_0 - \kappa}$.
+
+The question is what precision do we get when we go from these factors to factors in $K[[X]][Y]$.
+
+\item Now the key argument is: for fixed $1 \le i \le s$, there is a reparametrization (or coordinates change) $(\alpha(X,Y), \beta(X,Y))$ that will transform $G_i^*$, into the corresponding analytic factor $F_i^*$ of $F \in K[[X]][Y]$, that is
 $$
-    
+G_i^*(\alpha(X,Y), \beta(X,Y)) = F_i^*(X,Y).
+$$
+
+Modulo $X^{N_0-\kappa}$, we obtain from (\ref{FXfactors}):
+$$
+G_i^*(\alpha(X,Y), \beta(X,Y)) \equiv F_i(X,Y) \mod X^{N_0-\kappa}.
+$$
+
 We have to show that if we apply this same reparametrization to $G_i$ we will obtain
-$$G_i(\alpha(X,Y), \beta(X,Y)) \equiv F_i \mod X^{N_0 - \kappa}.$$
+$$G_i(\alpha(X,Y), \beta(X,Y)) \equiv H_i \equiv F_i \mod X^{N_0 - \kappa}.$$
+
+\item We compute $\alpha$ and $\beta$ for fixed $i$.
+Let
+$$(x(T), y(T)) = (a_0 T^{m_0} + a_1 T^{m_1} + \dots, T^n)$$
+be a parametrization of the $i$-th branch (here $n = e_i$ and $m_0 = d_i$). The Puiseux expansions are $\eta_j = a_0 (\psi T)^{\frac{m_0}{n}} +  a_1 (\psi T)^{\frac{m_0}{n}} + \dots$, where $\psi$ is an $n$-th root of unity and
+$$
+G_i^*(x, y) = (x - \eta_1(y)) \cdots (x - \eta_n(y)).
+$$
+
+To invert this transformation we note
+\begin{align*}
+(x(T), y(T)) &= (T^{m_0} (a_0 + a_1 T^{m_1 - m_0} + \dots), T^n) \\
+             &= \left(\left(T \sqrt[m_0]{a_0 + a_1 T^{m_1 - m_0} + \dots}\right)^{m_0}, T^n\right)
+\end{align*}
+
+Let
+$$
+b_0 + b_1 T + b_2 T^2 + \dots = \sqrt[m_0]{a_0 + a_1 T^{m_1 - m_0} + \dots}
+$$
+be an $m_0$-th root of $a_0 + a_1 T^{m_1 - m_0} + \dots$, 
+and set $U = T (b_0  + b_1 T + b_2 T^2 + \dots) = b_0 T + b_1 T^2 + b_2 T^3 + \dots = q(T)$.
+Finally let $p(U) = c_1 U + c_2 U^2 + \dots$ be the composite inverse of $q(T)$, that is $q(p(U)) = U$ and hence $T = p(U)$.
+
+We obtain the parametrization
+$$(U^{m_0}, p(U)^n).$$
+
+We note that all this transformation can be done without precision loss.
+%
+%Inverting the series, we obtain
+%$$
+%T =  (x(T), y(T)) = (T^{m_0} (a_0 + a_1 T^{m_1 - m_0} + \dots), T^n)
+%$$
+
+
+
+
+
+
+
+
+
+
 \end{enumerate}
+
+
+
 
 
 
@@ -221,3 +272,83 @@ We get very good timings.
 
 
 \end{document}
+
+
+We now formalize these ideas and calculate the required precision. For this, we need to be able to go from Puiseux expansions in $X$ to Puiseux expansions in $Y$.
+
+\begin{enumerate}
+\item We start with a polynomial $F$ with analytic factorization
+$$
+F = F_0^* F_1^* \dots F_s^*$$
+($F_i^* \in K[[X]][Y]$ and $F_0^*$ is the unit corresponding to the branches outside the origin).
+
+\item Let $\overline{F}^X$ be the truncation of $F$ modulo $X^{N_0}$, for some $N_0 \in \N$. Applying any factorization algorithm to $\overline{F}^X$ (Newton-Puiseux algorithm or Hensel lifting) we can obtain a factorization
+\begin{equation} \label{FXfactors}
+F \equiv \overline{F}^X \equiv  F_0 F_1 \dots F_s \mod X^{N_0}.
+\end{equation}
+
+
+\item For this factorization, Proposition \ref{prop:factors} says that
+$$F_i \equiv F_i^* \mod X^{N_0 - \kappa}$$
+for $i > 0$.
+
+\item Now we truncate in $Y$. Let $\overline{F}^{XY}$ be the truncation of $\overline{F}^X$ modulo $Y^{N_0}$. We can factorize this polynomial in $K[[X]][Y]$ as
+$$
+\overline{F}^{XY} =  \tilde{F}_0 \tilde{F}_1 \dots \tilde{F}_s,
+$$
+and we want to know if $\tilde{F}_i \equiv F_i \mod X^{N_0}$ for $i > 0$ (we cannot expect $\tilde{F}_0 \equiv F_0 \mod X^{N_0}$).
+
+\item Applying again Proposition \ref{prop:factors} to $\overline{F}^X$ in $K[[Y]][X]$  we obtain that if we factorize $\overline{F}^{XY} \equiv  G_0 G_1 \dots G_s$, $G_i \in K[[Y]][X]$ and
+$$
+\overline{F}^{X} \equiv \overline{F}^{XY} \equiv  G_0 G_1 \dots G_s \mod Y^{N_0}
+$$
+then
+$$G_i \equiv G_i^* \mod Y^{N_0 - \kappa}$$
+for all $i$, where $G_i^*$ are the analytic factors of $\overline{F}^{X} \in K[[Y]][X]$.
+
+\item Now the key argument is: for fixed $1 \le i \le s$, there is a reparametrization (or coordinates change) $(\alpha(X,Y), \beta(X,Y))$ that will transform $G_i^*$, into the corresponding analytic factor $(\overline{F}^{X})_i^*$ of $\overline{F}^{X} \in K[[X]][Y]$, that is
+$$
+G_i^*(\alpha(X,Y), \beta(X,Y)) = (\overline{F}^{X})_i^*(X,Y).
+$$
+
+Modulo $X^{N_0-\kappa}$, we obtain from (\ref{FXfactors}):
+$$
+G_i^*(\alpha(X,Y), \beta(X,Y)) \equiv (\overline{F}^{X})_i^* \equiv F_i \mod X^{N_0-\kappa}.
+$$
+
+We have to show that if we apply this same reparametrization to $G_i$ we will obtain
+$$G_i(\alpha(X,Y), \beta(X,Y)) \equiv F_i \mod X^{N_0 - \kappa}.$$
+\end{enumerate}
+
+
+\subsection{Second try}
+
+Another attempt. We start with a polynomial $F$.
+
+\begin{enumerate}
+\item We can factorize $F$ in $K[[X]][Y]$:
+$$
+F = F_0^* F_1^* \dots F_s^*
+$$
+and we can also factorize in $K[[Y]][X]$:
+$$
+F = G_0^* G_1^* \dots G_s^*
+$$
+(the factors correspond to the brances so we get the same number).
+
+\item For $1 \le i \le s$, there exists $\alpha_i(X, Y), \beta_i(X,Y)$ such that
+$$
+F_i^*(X, Y) = G_i^*(\alpha_i(X, Y), \beta_i(X, Y))
+$$
+
+\item If we factorize $F$ in $K[[Y]][X]$ modulo $Y^N$, we obtain
+$$
+F \equiv G_0 G_1 \dots G_s \mod Y^N,
+$$
+and by Proposition \ref{prop:factors}, $G_i \equiv G_i^\star \mod Y^{N-\kappa}$.
+
+NOTE: Probably we dont need this factorization, because we never compute this factorization.
+
+\item Now we apply the transformation to the $G_i$ and we have to show that this gives a factorization of $F$ modulo $X^N$.
+Or maybe we have to factorize $F(\alpha^{-1}(X, Y), \beta^{-1}(X, Y))$??
+\end{enumerate}
