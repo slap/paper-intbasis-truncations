@@ -129,9 +129,9 @@ $$
 the maximum of the lifting orders being taken over all disjoint subsets $I, J \subset {0,\dots,s}$,
 with $F_I = \prod_{i\in I} F_i$. Then there exists uniquely determined analytic factors $F_0^*, F_1^*,\dots, F_k^*$ such that $F = F_0^* F_1^* \cdots F_k^*$, where
 $$
-F_i^* \equiv F_i \mod X^{N_0−\kappa}.
+F_i^* \equiv F_i \mod X^{N_0'-\kappa}.
 $$
-Moreover, starting from (\ref{factorization}, we can compute the $F_i^\star$ up to any precision $N \ge N_0 − \kappa$ in $\bigO(dN)$ operations over $K$.
+Moreover, starting from (\ref{factorization}, we can compute the $F_i^\star$ up to any precision $N \ge N_0 - \kappa$ in $\bigO(dN)$ operations over $K$.
 \end{proposition}
 
 This proposition says that if we truncate $f$ at precision $n$ in $X$ and we factorize the truncated polynomial $\bar f$ in $K[[X]][Y]$, we will get the factors of $f$ with precision $n - \kappa$.
@@ -179,7 +179,7 @@ $$
 $$
 and we want to know if ${H}_i \equiv F^*_i \mod X^{N_0 - \kappa}$ for $i > 0$ (we cannot expect $H_0 \equiv F_0^* \mod X^{N_0 - \kappa}$).
 
-\item We can also factorize $\overline{F}^{Y}$ in $K[[Y]][X]$: 
+\item We can also factorize $\overline{F}^{Y}$ in $K[[Y]][X]$:
 $$\overline{F}^{Y} \equiv G_0 G_1 \dots G_s \mod Y^{N_0}.$$
 
 \item Applying Proposition \ref{prop:factors} to ${F}$ in $K[[Y]][X]$  we obtain that
@@ -222,7 +222,7 @@ Let
 $$
 b_0 + b_1 T + b_2 T^2 + \dots = \sqrt[m_0]{a_0 + a_1 T^{m_1 - m_0} + \dots}
 $$
-be an $m_0$-th root of $a_0 + a_1 T^{m_1 - m_0} + \dots$, 
+be an $m_0$-th root of $a_0 + a_1 T^{m_1 - m_0} + \dots$,
 and set $U = T (b_0  + b_1 T + b_2 T^2 + \dots) = b_0 T + b_1 T^2 + b_2 T^3 + \dots = q(T)$.
 Finally let $p(U) = c_1 U + c_2 U^2 + \dots$ be the composite inverse of $q(T)$, that is $q(p(U)) = U$ and hence $T = p(U)$.
 
