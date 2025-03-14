@@ -206,30 +206,32 @@ $$G_i(\alpha(X,Y), \beta(X,Y)) \equiv H_i \equiv F_i \mod X^{N_0 - \kappa}.$$
 
 \item We compute $\alpha$ and $\beta$ for fixed $i$.
 Let
-$$(x(T), y(T)) = (a_0 T^{m_0} + a_1 T^{m_1} + \dots, T^n)$$
-be a parametrization of the $i$-th branch (here $n = e_i$ and $m_0 = d_i$). The Puiseux expansions are $\eta_j = a_0 (\psi T)^{\frac{m_0}{n}} +  a_1 (\psi T)^{\frac{m_0}{n}} + \dots$, where $\psi$ is an $n$-th root of unity and
+$$(x(T), y(T)) = (a_0 T^{m_0} + a_1 T^{m_0+1} + a_2 T^{m_0+2} + \dots, T^n),$$
+$a_0 \neq 0$, be a parametrization of the $i$-th branch (here $n = e_i$ and $m_0 = d_i$). The Puiseux expansions are $\eta_j = a_0 (\psi T)^{\frac{m_0}{n}} +  a_1 (\psi T)^{\frac{m_0 + 1}{n}} +  a_2 (\psi T)^{\frac{m_0 + 2}{n}}+ \dots$, where $\psi$ is an $n$-th root of unity and
 $$
 G_i^*(x, y) = (x - \eta_1(y)) \cdots (x - \eta_n(y)).
 $$
 
 To invert this transformation we note
 \begin{align*}
-(x(T), y(T)) &= (T^{m_0} (a_0 + a_1 T^{m_1 - m_0} + \dots), T^n) \\
-             &= \left(\left(T \sqrt[m_0]{a_0 + a_1 T^{m_1 - m_0} + \dots}\right)^{m_0}, T^n\right)
+(x(T), y(T)) &= (T^{m_0} (a_0 + a_1 T + a_1 T^2 + \dots), T^n) \\
+             &= \left(\left(T \sqrt[m_0]{a_0 + a_1 T + a_2 T^2 + \dots}\right)^{m_0}, T^n\right)
 \end{align*}
 
 Let
 $$
-b_0 + b_1 T + b_2 T^2 + \dots = \sqrt[m_0]{a_0 + a_1 T^{m_1 - m_0} + \dots}
+b_0 + b_1 T + b_2 T^2 + \dots = \sqrt[m_0]{a_0 + a_1 T + a_2 T^2 + \dots}
 $$
-be an $m_0$-th root of $a_0 + a_1 T^{m_1 - m_0} + \dots$,
-and set $U = T (b_0  + b_1 T + b_2 T^2 + \dots) = b_0 T + b_1 T^2 + b_2 T^3 + \dots = q(T)$.
-Finally let $p(U) = c_1 U + c_2 U^2 + \dots$ be the composite inverse of $q(T)$, that is $q(p(U)) = U$ and hence $T = p(U)$.
+be an $m_0$-th root of $a_0 + a_1 T + a_2 T^2 + \dots$. In computations, if $a_0 + a_1 T + a_1 T^2 + \dots$ is developed up to precision $k$, then also $b_0 + b_1 T + b_2 T^2 + \dots$ can be computed with precision $k$.
 
-We obtain the parametrization
+Set $q(T) = T (b_0  + b_1 T + b_2 T^2 + \dots) = b_0 T + b_1 T^2 + b_2 T^3 + \dots$ (hence $x(T) = q(T)^{m_0}$). Again, $q(T)$ can be computed with precision $k$.
+
+Finally let $p(U) = c_1 U + c_2 U^2 + \dots$ be the composite inverse of $q(T)$ (which can also be computed with precision $k$), that is $q(p(U)) = U$ and hence $T = p(U)$.
+
+We obtain the new parametrization
 $$(U^{m_0}, p(U)^n).$$
 
-We note that all this transformation can be done without precision loss.
+As we have seen, all these transformations can be done without precision loss, hence if the $x$-Puiseux expansions of $G^*_i(x,y)$ are know with precision $k/n$.
 %
 %Inverting the series, we obtain
 %$$
