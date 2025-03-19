@@ -131,7 +131,7 @@ with $F_I = \prod_{i\in I} F_i$. Then there exists uniquely determined analytic 
 $$
 F_i^* \equiv F_i \mod X^{N_0'-\kappa}.
 $$
-Moreover, starting from (\ref{factorization}, we can compute the $F_i^\star$ up to any precision $N \ge N_0 - \kappa$ in $\bigO(dN)$ operations over $K$.
+Moreover, starting from (\ref{factorization}), we can compute the $F_i^\star$ up to any precision $N \ge N_0 - \kappa$ in $\bigO(dN)$ operations over $K$.
 \end{proposition}
 
 This proposition says that if we truncate $f$ at precision $n$ in $X$ and we factorize the truncated polynomial $\bar f$ in $K[[X]][Y]$, we will get the factors of $f$ with precision $n - \kappa$.
@@ -187,7 +187,7 @@ $$G_k \equiv G_k^* \mod Y^{N_0 - \kappa}$$
 where $G_k^*$ are the analytic factors of $F$ in $K[[Y]][X]$.
 
 By the same argument $G_k$ agrees with the analytic factors of $\overline{F}^{Y} \mod Y^{N_0 - \kappa}$.
-Hence: the analytic factors in $K[[Y]][X]$ of $F$ and $\overline{F}^{Y}$ are the same $\mod Y^{N_0 - \kappa}$.
+Hence: the analytic factors in $K[[Y]][X]$ of $F$ and $\overline{F}^{Y}$ are the same modulo $Y^{N_0 - \kappa}$.
 
 The question is what precision do we get when we go from these factors to factors in $K[[X]][Y]$.
 
@@ -214,37 +214,32 @@ $$
 $$
 and we want to compute the parametrization $(t^m, \gamma(t))$.
 
+That is, we want to invert th function $x = \eta(u)$ to obtain $y = \gamma(t)$.
+
 So let
-$$(x(U), y(U)) = (a_0 U^{m_0} + a_1 U^{m_0+1} + a_2 U^{m_0+2} + \dots, U^n),$$
-$a_0 \neq 0$, be a parametrization of the $k$-th branch (here $n = e_k$ and $m_0 = d_k$). The Puiseux expansions are 
-$$
-\eta_j = a_0 (\zeta u)^{\frac{m_0}{n}} +  a_1 (\zeta u)^{\frac{m_0 + 1}{n}} +  a_2 (\zeta u)^{\frac{m_0 + 2}{n}}+ \dots,
-$$ 
-where $\psi$ is an $n$-th root of unity and
-$$
-G_i^*(x, y) = (x - \eta_1(y)) \cdots (x - \eta_n(y)).
-$$
+$$\eta(u) = (a_0 u^{m_0} + a_1 u^{m_0+1} + a_2 u^{m_0+2} + \dots,$$
+$a_0 \neq 0$ (here $n = e_k$ and $m_0 = d_k$). 
 
 To invert this transformation we note
 \begin{align*}
-(x(U), y(U)) &= (U^{m_0} (a_0 + a_1 U + a_1 U^2 + \dots), U^n) \\
-             &= \left(\left(U \sqrt[m_0]{a_0 + a_1 U + a_2 U^2 + \dots}\right)^{m_0}, U^n\right)
+\eta(u) &= u^{m_0} (a_0 + a_1 u + a_1 u^2 + \dots) \\
+        &= \left(u \sqrt[m_0]{a_0 + a_1 u + a_2 u^2 + \dots}\right)^{m_0}
 \end{align*}
 
 Let
 $$
-b_0 + b_1 U + b_2 U^2 + \dots = \sqrt[m_0]{a_0 + a_1 U + a_2 U^2 + \dots}
+b_0 + b_1 u + b_2 u^2 + \dots = \sqrt[m_0]{a_0 + a_1 u + a_2 u^2 + \dots}
 $$
-be an $m_0$-th root of $a_0 + a_1 U + a_2 U^2 + \dots$. In computations, if $a_0 + a_1 U + a_1 U^2 + \dots$ is developed up to precision $k$, then also $b_0 + b_1 U + b_2 U^2 + \dots$ can be computed with precision $k$.
+be an $m_0$-th root of $a_0 + a_1 u + a_2 u^2 + \dots$. In computations, if $a_0 + a_1 u + a_1 u^2 + \dots$ is developed up to precision $c$, then also $b_0 + b_1 U + b_2 U^2 + \dots$ can be computed with precision $c$.
 
-Set $q(U) = U (b_0  + b_1 U + b_2 U^2 + \dots) = b_0 U + b_1 U^2 + b_2 U^3 + \dots$ (hence $x(U) = q(U)^{m_0}$). Again, $q(U)$ can be computed with precision $k$.
+Set $q(u) = u (b_0  + b_1 u + b_2 u^2 + \dots) = b_0 u + b_1 u^2 + b_2 u^3 + \dots$ (hence $\eta(u) = q(u)^{m_0}$). Again, $q(u)$ can be computed with precision $c$.
 
-Finally let $p(T) = c_1 T + c_2 T^2 + \dots$ be the composite inverse of $q(U)$ (which can also be computed with precision $k$), that is $q(p(T)) = T$ and hence $U = p(T)$.
+Finally let $p(t) = c_1 t + c_2 t^2 + \dots$ be the composite inverse of $q(u)$ (which can also be computed with precision $c$), that is $q(p(t)) = t$ and hence $u = p(t)$.
 
 We obtain the new parametrization
-$$(T^{m_0}, p(T)^n).$$
+$$(t^{m_0}, p(t)^n).$$
 
-As we have seen, all these transformations can be done without precision loss, hence if the $x$-Puiseux expansions of $G^*_i(x,y)$ are know with precision $k/n$.
+As we have seen, all these transformations can be done without precision loss, hence if the $x$-Puiseux expansions of $G^*_i(x,y)$ are known with precision $c/n$, then the $y$-Puiseux expansions of $F^*_i(x,y)$ are known with precision $c/m$.
 %
 %Inverting the series, we obtain
 %$$
