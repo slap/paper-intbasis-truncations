@@ -131,7 +131,7 @@ with $F_I = \prod_{i\in I} F_i$. Then there exists uniquely determined analytic 
 $$
 F_i^* \equiv F_i \mod X^{N_0'-\kappa}.
 $$
-Moreover, starting from (\ref{factorization}, we can compute the $F_i^\star$ up to any precision $N \ge N_0 - \kappa$ in $\bigO(dN)$ operations over $K$.
+Moreover, starting from (\ref{factorization}), we can compute the $F_i^\star$ up to any precision $N \ge N_0 - \kappa$ in $\bigO(dN)$ operations over $K$.
 \end{proposition}
 
 This proposition says that if we truncate $f$ at precision $n$ in $X$ and we factorize the truncated polynomial $\bar f$ in $K[[X]][Y]$, we will get the factors of $f$ with precision $n - \kappa$.
@@ -164,74 +164,82 @@ We now formalize these ideas and calculate the required precision. For this, we 
 \item We start with a polynomial $F \in K[X,Y]$ with analytic factorization in $K[[X]][Y]$:
 $$
 F = F_0^* F_1^* \dots F_s^*,$$
-where $F_i^* \in K[[X]][Y]$ and $F_0^*$ is the unit corresponding to the branches outside the origin). Let $d_i$ be the degree in $Y$ of $F_i^*$ and let $e_i$ be the largest denominator of the Puiseux expansions of $F_i^*$.
+where $F_k^* \in K[[X]][Y]$ and $F_0^*$ is the unit corresponding to the branches outside the origin). Let $d_k$ be the degree in $Y$ of $F_k^*$ and let $e_k$ be the largest denominator of the Puiseux expansions of $F_k^*$.
 
 \item If we have a factorization
 \begin{equation} \label{FXfactors}
 F \equiv  F_0 F_1 \dots F_s \mod X^{N_0},
 \end{equation}
-then by Proposition \ref{prop:factors}, $F_i \equiv F_i^* \mod X^{N_0 - \kappa}$.
+then by Proposition \ref{prop:factors}, $F_k \equiv F_k^* \mod X^{N_0 - \kappa}$.
 
 
 \item Now we truncate in $Y$. Let $\overline{F}^{Y}$ be the truncation of $F$ modulo $Y^{N_0}$. We can factorize this polynomial in $K[[X]][Y]$ as
 $$
 \overline{F}^{Y} \equiv  {H}_0 {H}_1 \dots {H}_s \mod X^{N_0},
 $$
-and we want to know if ${H}_i \equiv F^*_i \mod X^{N_0 - \kappa}$ for $i > 0$ (we cannot expect $H_0 \equiv F_0^* \mod X^{N_0 - \kappa}$).
+and we want to know if ${H}_k \equiv F^*_k \mod X^{N_0 - \kappa}$ for $k > 0$ (we cannot expect $H_0 \equiv F_0^* \mod X^{N_0 - \kappa}$).
 
 \item We can also factorize $\overline{F}^{Y}$ in $K[[Y]][X]$:
 $$\overline{F}^{Y} \equiv G_0 G_1 \dots G_s \mod Y^{N_0}.$$
 
 \item Applying Proposition \ref{prop:factors} to ${F}$ in $K[[Y]][X]$  we obtain that
-$$G_i \equiv G_i^* \mod Y^{N_0 - \kappa}$$
-where $G_i^*$ are the analytic factors of $F$ in $K[[Y]][X]$.
+$$G_k \equiv G_k^* \mod Y^{N_0 - \kappa}$$
+where $G_k^*$ are the analytic factors of $F$ in $K[[Y]][X]$.
 
-By the same argument $G_i$ agrees with the analytic factors of $\overline{F}^{Y} \mod Y^{N_0 - \kappa}$.
-Hence: the analytic factors in $K[[Y]][X]$ of $F$ and $\overline{F}^{Y}$ are the same $\mod Y^{N_0 - \kappa}$.
+By the same argument $G_k$ agrees with the analytic factors of $\overline{F}^{Y} \mod Y^{N_0 - \kappa}$.
+Hence: the analytic factors in $K[[Y]][X]$ of $F$ and $\overline{F}^{Y}$ are the same modulo $Y^{N_0 - \kappa}$.
 
 The question is what precision do we get when we go from these factors to factors in $K[[X]][Y]$.
 
-\item Now the key argument is: for fixed $1 \le i \le s$, there is a reparametrization (or coordinates change) $(\alpha(X,Y), \beta(X,Y))$ that will transform $G_i^*$, into the corresponding analytic factor $F_i^*$ of $F \in K[[X]][Y]$, that is
+\item Now the key argument is: for fixed $1 \le k \le s$, there is a reparametrization (or coordinates change) $(\alpha(X,Y), \beta(X,Y))$ that will transform $G_k^*$, into the corresponding analytic factor $F_k^*$ of $F \in K[[X]][Y]$, that is
 $$
-G_i^*(\alpha(X,Y), \beta(X,Y)) = F_i^*(X,Y).
+G_k^*(\alpha(X,Y), \beta(X,Y)) = F_k^*(X,Y).
 $$
 
 Modulo $X^{N_0-\kappa}$, we obtain from (\ref{FXfactors}):
 $$
-G_i^*(\alpha(X,Y), \beta(X,Y)) \equiv F_i(X,Y) \mod X^{N_0-\kappa}.
+G_k^*(\alpha(X,Y), \beta(X,Y)) \equiv F_i(X,Y) \mod X^{N_0-\kappa}.
 $$
 
-We have to show that if we apply this same reparametrization to $G_i$ we will obtain
-$$G_i(\alpha(X,Y), \beta(X,Y)) \equiv H_i \equiv F_i \mod X^{N_0 - \kappa}.$$
+We have to show that if we apply this same reparametrization to $G_k$ we will obtain
+$$G_k(\alpha(X,Y), \beta(X,Y)) \equiv H_k \equiv F_k \mod X^{N_0 - \kappa}.$$
 
-\item We compute $\alpha$ and $\beta$ for fixed $i$.
-Let
-$$(x(T), y(T)) = (a_0 T^{m_0} + a_1 T^{m_0+1} + a_2 T^{m_0+2} + \dots, T^n),$$
-$a_0 \neq 0$, be a parametrization of the $i$-th branch (here $n = e_i$ and $m_0 = d_i$). The Puiseux expansions are $\eta_j = a_0 (\psi T)^{\frac{m_0}{n}} +  a_1 (\psi T)^{\frac{m_0 + 1}{n}} +  a_2 (\psi T)^{\frac{m_0 + 2}{n}}+ \dots$, where $\psi$ is an $n$-th root of unity and
+\item By \cite[Theorem 5.17]{JP}, we can write
 $$
-G_i^*(x, y) = (x - \eta_1(y)) \cdots (x - \eta_n(y)).
+G_k(x,y) = \prod_{i=1}^n (x - \eta(\zeta^i y^{1/n})) = \prod_{i=1}^n (x - \eta(\zeta^i u)),
 $$
+where $\zeta$ is a primitive $n$–th root of unity and $y = u^n$. The corresponding parametrization of the singularity is
+$$
+(\eta(u), u^n)
+$$
+and we want to compute the parametrization $(t^m, \gamma(t))$.
+
+That is, we want to invert th function $x = \eta(u)$ to obtain $y = \gamma(t)$.
+
+So let
+$$\eta(u) = (a_0 u^{m_0} + a_1 u^{m_0+1} + a_2 u^{m_0+2} + \dots,$$
+$a_0 \neq 0$ (here $n = e_k$ and $m_0 = d_k$). 
 
 To invert this transformation we note
 \begin{align*}
-(x(T), y(T)) &= (T^{m_0} (a_0 + a_1 T + a_1 T^2 + \dots), T^n) \\
-             &= \left(\left(T \sqrt[m_0]{a_0 + a_1 T + a_2 T^2 + \dots}\right)^{m_0}, T^n\right)
+\eta(u) &= u^{m_0} (a_0 + a_1 u + a_1 u^2 + \dots) \\
+        &= \left(u \sqrt[m_0]{a_0 + a_1 u + a_2 u^2 + \dots}\right)^{m_0}
 \end{align*}
 
 Let
 $$
-b_0 + b_1 T + b_2 T^2 + \dots = \sqrt[m_0]{a_0 + a_1 T + a_2 T^2 + \dots}
+b_0 + b_1 u + b_2 u^2 + \dots = \sqrt[m_0]{a_0 + a_1 u + a_2 u^2 + \dots}
 $$
-be an $m_0$-th root of $a_0 + a_1 T + a_2 T^2 + \dots$. In computations, if $a_0 + a_1 T + a_1 T^2 + \dots$ is developed up to precision $k$, then also $b_0 + b_1 T + b_2 T^2 + \dots$ can be computed with precision $k$.
+be an $m_0$-th root of $a_0 + a_1 u + a_2 u^2 + \dots$. In computations, if $a_0 + a_1 u + a_1 u^2 + \dots$ is developed up to precision $c$, then also $b_0 + b_1 U + b_2 U^2 + \dots$ can be computed with precision $c$.
 
-Set $q(T) = T (b_0  + b_1 T + b_2 T^2 + \dots) = b_0 T + b_1 T^2 + b_2 T^3 + \dots$ (hence $x(T) = q(T)^{m_0}$). Again, $q(T)$ can be computed with precision $k$.
+Set $q(u) = u (b_0  + b_1 u + b_2 u^2 + \dots) = b_0 u + b_1 u^2 + b_2 u^3 + \dots$ (hence $\eta(u) = q(u)^{m_0}$). Again, $q(u)$ can be computed with precision $c$.
 
-Finally let $p(U) = c_1 U + c_2 U^2 + \dots$ be the composite inverse of $q(T)$ (which can also be computed with precision $k$), that is $q(p(U)) = U$ and hence $T = p(U)$.
+Finally let $p(t) = c_1 t + c_2 t^2 + \dots$ be the composite inverse of $q(u)$ (which can also be computed with precision $c$), that is $q(p(t)) = t$ and hence $u = p(t)$.
 
 We obtain the new parametrization
-$$(U^{m_0}, p(U)^n).$$
+$$(t^{m_0}, p(t)^n).$$
 
-As we have seen, all these transformations can be done without precision loss, hence if the $x$-Puiseux expansions of $G^*_i(x,y)$ are know with precision $k/n$.
+As we have seen, all these transformations can be done without precision loss, hence if the $x$-Puiseux expansions of $G^*_i(x,y)$ are known with precision $c/n$, then the $y$-Puiseux expansions of $F^*_i(x,y)$ are known with precision $c/m$.
 %
 %Inverting the series, we obtain
 %$$
