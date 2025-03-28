@@ -218,7 +218,7 @@ That is, we want to invert th function $x = \eta(u)$ to obtain $y = \gamma(t)$.
 
 So let
 $$\eta(u) = (a_0 u^{m_0} + a_1 u^{m_0+1} + a_2 u^{m_0+2} + \dots,$$
-$a_0 \neq 0$ (here $n = e_k$ and $m_0 = d_k$). 
+$a_0 \neq 0$ (here $n = e_k$ and $m_0 = d_k$).
 
 To invert this transformation we note
 \begin{align*}
@@ -246,17 +246,28 @@ As we have seen, all these transformations can be done without precision loss, h
 %T =  (x(T), y(T)) = (T^{m_0} (a_0 + a_1 T^{m_1 - m_0} + \dots), T^n)
 %$$
 
-
-
-
-
-
-
-
-
-
 \end{enumerate}
 
+\begin{remark}
+The argument for truncations in $Y$ is the following:
+\begin{enumerate}
+\item Let $\bar F$ be the truncation of $F$ at some degree $K > 2 \IntExpY$ in $Y$. We want to know a good $K$.
+\item Assume the $Y$-Puiseux expansions of the truncated polynomial are correct up to degree $D = K - \IntExpY$ (I wrote that we can deduce this from Proposition 23 but I am not sure how).
+\item Consider a branch where the Puiseux expansions in $X$ have denominator $n$ and the Puiseux expansions in $Y$ have denominator $m$. Then the polynomial $\eta(U)$ corresponding to that branch is correct up to degree $Dm$ (the Puiseux expansion $\eta(Y^{1/m})$ is correct to degree $D$ and we take $U = Y^{1/m}$).
+\item Applying the inverse formula we get a polynomial $\gamma(T)$ which is correct up to the same degree $Dm$ in $T$. Now we replace $T = X^{1/n}$ to get the Puiseux expansions in $X$, $\gamma(X^{1/n})$. We get correct Puiseux expansions up to degree $Dm/n$.
+\item We need this number $Dm/n$ to be bigger than $\IntExpX$.
+\item Consider the smaller $m/n$ over all branches. So we need $D m/n > \IntExpX$, hence
+$$
+m/n (K - \IntExpY) > \IntExpX.
+$$
+\item This gives 
+$$K > n/m \IntExpX + \IntExpY,$$
+which is the bound we were looking for (this should be something similar to $2 \IntExpY$, we could do this computation, but the formula we got is good enough).
+\end{enumerate}
+
+
+
+\end{remark}
 
 
 
