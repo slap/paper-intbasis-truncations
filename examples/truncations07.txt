@@ -7,6 +7,15 @@ cd C:/Users/Usuario/Documents/GitHub/Singular/Singular/LIB
 // for computing the integral basis
 //
 
+
+// Determinacy
+LIB "polyclass.lib";
+LIB "arnoldgit.lib";
+ring R=0,(x,y),ds;
+poly g = (y3 - x2)*(y2-x3)+y26;
+determinacyBound(g);  // 35
+
+
 printlevel = 3;
 
 LIB"integralbasis.lib";
