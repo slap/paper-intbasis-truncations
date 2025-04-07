@@ -155,7 +155,7 @@ The notation in the algorithm is as follows:
 \item $\delta = \upsilon_X \left( \operatorname{Res}_Y(F, F_Y) \right)$
 \item We can consider $\mathbb{K}_P = \mathbb{Q}$, and $H$ is our polynomial $f$.
 \item $v_i = v_X({(F_i)}_Y)$. If $f$ has only only one branch, then this number is the integrality exponent. If $f$ has many branches, then $v_i$ can be bigger than the integrality exponent (
-\item The integer $e_i \in\mathbb{N}$ is the ramification index of $F_i$, equal to the largest denominator or the number of expansions in the branch. 
+\item The integer $e_i \in\mathbb{N}$ is the ramification index of $F_i$, equal to the largest denominator or the number of expansions in the branch.
 \item The \emph{regularity index} \( r \) of a Puiseux series \( S \) of \( F \) with ramification index \( e \) is the least integer \( N \ge \min(0, e \upsilon_X(S)) \) such that, if
 \[
 \left\lceil S \right\rceil^{N/e} = \left\lceil S' \right\rceil^{N/e}
@@ -182,7 +182,7 @@ For example, if we have only one branch with seven Puiseux expansions and one ch
 We have:
 \begin{itemize}
 \item $r_i \le \alpha$ (clear by definition)
-\item $v_i \le \alpha$ when there is only one branch, but not in general.
+\item $v_i \le \IntExpX \le \alpha$ when there is only one branch, but not in general. Proof: if $F_i = (Y-\gamma_1) \dots (Y-\gamma_r)$ then $(F_i)_Y(\gamma_1) = (1+\gamma_1)(\gamma_2 - \gamma_1)\cdots (\gamma_r - \gamma_1) + 0 + 0 + \dots + 0$. The first factor in the first term has order 0 at $X$, so the order of the product is equal to $\IntExpX$ (it is the same formula).
 \end{itemize}
 
 
@@ -202,16 +202,16 @@ For the computation of the integral basis we also need the singular part of the 
 
 However if we compute the Puiseux expansions from $\bar f$, the same proposition says that we will obtain the Puiseux expansions with precision at least $\IntExpX$, and hence the singular part will be correctly computed.
 
-\item I am not sure about this last step. In any case, we can compute the singular part of the Puiseux expansions by truncating at three times the integrality exponent. The argument is as follows:
+\item I am not sure about this last step. In any case, we can compute the singular part of the Puiseux expansions by truncating at $\alpha + 2 \times \IntExpX$ (a little larger than $3 \times \IntExpX$). The argument is as follows:
 
     \begin{enumerate}
     \item We apply Half-RNP algorithm (page 13) to one factor $F_i$.
     \item In this case $v_i = v_X({(F_i)}_Y)$ and this is smaller than $\IntExpX$ (the integrality exponent of one branch is smaller than that of the full polynomial).
     \item $r_i$ may not be smaller than the integrality exponent but we have $r_i \le \alpha$.
-    \item So by the algorithm we need $n \ge v_i + r_i$, and $v_i + r_i \le \alpha + \IntExpX$. That is, we need the factors $F_i$ developed to degree $\alpha + \IntExpX$, and we can get this by computing a factorization of $F$ modulo $\alpha + 2 \IntExpX$.
+    \item So by the algorithm we need $n \ge v_i + r_i$, and $v_i + r_i \le \alpha + \IntExpX$. That is, we need the factors $F_i$ developed to degree $\alpha + \IntExpX$ and by Proposition \ref{prop:factors} we can get this by computing a factorization of $F$ modulo $\alpha + 2 \IntExpX$.
     \end{enumerate}
 
-\item Putting everything together, we can truncate the powers of $X$ of $f$ at order two times the integrality exponent and we will be able to compute the correct factors and Puisuex expansions up to the integrality exponent and hence we will compute the correct integral basis.
+\item Putting everything together, we can truncate the powers of $X$ of $f$ at order $\alpha + 2 \IntExpX$ and we will be able to compute the correct factors up to the integrality exponent and the singular part of the Puiseux expansions and hence we will compute the correct integral basis.
 
 \end{enumerate}
 
@@ -319,11 +319,11 @@ As we have seen, all these transformations can be done without precision loss, h
 \begin{remark}
 The argument for truncations in $Y$ is the following:
 \begin{enumerate}
-\item Let $\bar F$ be the truncation of $F$ at some degree $K > 2 \IntExpY$ in $Y$. We want to know a good $K$.
-\item Assume the $Y$-Puiseux expansions of the truncated polynomial are correct up to degree $D = K - \IntExpY$ (I wrote that we can deduce this from Proposition 23 but I am not sure how).
-\item Consider a branch where the Puiseux expansions in $X$ have denominator $n$ and the Puiseux expansions in $Y$ have denominator $m$. Then the polynomial $\eta(U)$ corresponding to that branch is correct up to degree $Dm$ (the Puiseux expansion $\eta(Y^{1/m})$ is correct to degree $D$ and we take $U = Y^{1/m}$).
-\item Applying the inverse formula we get a polynomial $\gamma(T)$ which is correct up to the same degree $Dm$ in $T$. Now we replace $T = X^{1/n}$ to get the Puiseux expansions in $X$, $\gamma(X^{1/n})$. We get correct Puiseux expansions up to degree $Dm/n$.
-\item We need this number $Dm/n$ to be bigger than $\IntExpX$.
+\item Let $\bar F$ be the truncation of $F$ at some degree $K > \alpha_Y + 2 \IntExpY$ in $Y$. We want to know a good $K$.
+\item By Proposition 23 we can compute the factors in $K[[X]][Y]$ correct up to degree $K - \IntExpY \ge \alpha + \IntExpY$, and hence we con compute the $Y$-Puiseux expansions of the truncated polynomial correct up to degree $D = (K - \IntExpY) / e_i$.
+\item Consider a branch where the Puiseux expansions in $X$ have denominator $n$ and the Puiseux expansions in $Y$ have denominator $m =e_i$. Then the polynomial $\eta(U)$ corresponding to that branch is correct up to degree $D$ (the Puiseux expansion $\eta(Y^{1/m})$ is correct to degree $D/m$ and we take $U = Y^{1/m}$).
+\item Applying the inverse formula we get a polynomial $\gamma(T)$ which is correct up to the same degree $D$ in $T$. Now we replace $T = X^{1/n}$ to get the Puiseux expansions in $X$, $\gamma(X^{1/n})$. We get correct Puiseux expansions up to degree $D/n$.
+\item We need this number $D/n$ to be bigger than $\IntExpX$. Question: can we request only $D > \IntExpX$? (that is, if we know the expansions up to degree $D/n$ can we recover the factor to degree $D$? We assume it is possible. If not, we should take $1/n$ instead of $m/n$ in the following steps.
 \item Consider the smaller $m/n$ over all branches. So we need $D m/n > \IntExpX$, hence
 $$
 m/n (K - \IntExpY) > \IntExpX.
