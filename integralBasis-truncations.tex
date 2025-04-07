@@ -20,7 +20,9 @@
 \usepackage{amsthm}
 \usepackage{algorithm}
 %\usepackage{algpseudocode}
-\usepackage[noend]{algorithmic}
+%\usepackage[noend]{algorithmic}
+\usepackage[noend]{algpseudocode}
+
 \usepackage{todonotes}
 \usepackage{amsfonts}
 \usepackage{graphicx}
@@ -82,6 +84,8 @@
 \newcommand{\vardbtilde}[1]{\tilde{\raisebox{0pt}[0.85\height]{$\tilde{#1}$}}}
 
 
+
+
 \begin{document}
 \title[Good truncations for computing integral bases]{Good truncations for computing integral bases}
 %\author{D. Basson, J. Boehm, S. Laplagne, M. Marais}
@@ -134,18 +138,82 @@ $$
 Moreover, starting from (\ref{factorization}), we can compute the $F_i^\star$ up to any precision $N \ge N_0 - \kappa$ in $\bigO(dN)$ operations over $K$.
 \end{proposition}
 
+For computing Puiseux expansions we use the following algorithm:
+
+\begin{algorithm}[H]
+\caption{Half-RNP($H, P, n, \pi$)}
+\begin{algorithmic}[1]
+\State \textbf{Input:} $P \in \mathbb{K}[Z]$ irreducible;
+$H \in \mathbb{K}_P[X, Y]$ separable and monic in $Y$, with $d := \deg_Y(H) > 0$;
+$n \in \mathbb{N}$ (truncation order); $\pi$ the current truncated parametrisation (initial call: $P = Z$, $\pi = (X, Y)$)
+\State \textbf{Output:} All RPEs $R_i$ of $H$ such that $n - v_i \ge r_i$, with precision $(n - v_i)/e_i \ge r_i/e_i$
+\end{algorithmic}
+\end{algorithm}
+
+The notation in the algorithm is as follows:
+\begin{itemize}
+\item $\delta = \upsilon_X \left( \operatorname{Res}_Y(F, F_Y) \right)$
+\item We can consider $\mathbb{K}_P = \mathbb{Q}$, and $H$ is our polynomial $f$.
+\item $v_i = v_X({(F_i)}_Y)$. If $f$ has only only one branch, then this number is the integrality exponent. If $f$ has many branches, then $v_i$ can be bigger than the integrality exponent (
+\item The integer $e_i \in\mathbb{N}$ is the ramification index of $F_i$, equal to the largest denominator or the number of expansions in the branch. 
+\item The \emph{regularity index} \( r \) of a Puiseux series \( S \) of \( F \) with ramification index \( e \) is the least integer \( N \ge \min(0, e \upsilon_X(S)) \) such that, if
+\[
+\left\lceil S \right\rceil^{N/e} = \left\lceil S' \right\rceil^{N/e}
+\]
+for some Puiseux series \( S' \) of \( F \), then \( S = S' \). We call \( \left\lceil S \right\rceil^{r/e} \) the \emph{singular part} of \( S \) in \( F \).
+
+\item We denote by \( (R_i)_{1 \le i \le \rho} \) the rational Puiseux expansions of \( F \). To any \( R_i \), we will always associate the following notations:
+\begin{itemize}
+    \item \( e_i \), \( f_i \), and \( r_i \) will respectively denote the ramification index, the residual degree, and the regularity index of \( R_i \),
+    \item we define \( v_i \in \mathbb{Q} \) as \( \upsilon_X(F_Y(S)) \), for any Puiseux series \( S \) associated to \( R_i \).
+\end{itemize}
+The same notations will be used if \( S_i \) (or \( S_{ijk} \)) denotes a Puiseux series. If we omit the index \( i \), we will use the notations \( e \), \( f \), and \( r \) for the first three integers.
+
+\end{itemize}
+
+To give general bounds for these numbers we define a new number:
+$$
+\alpha = \sum r_i,
+$$
+the sum taken over all Puiseux branches. This number is bigger than the integrality exponent but not much bigger. And it is clear that $r_i \le \alpha$.
+
+For example, if we have only one branch with seven Puiseux expansions and one characteristic exponent $1/7$, then $\alpha = 1$ and the characteristic exponent is $6/7$.
+
+We have:
+\begin{itemize}
+\item $r_i \le \alpha$ (clear by definition)
+\item $v_i \le \alpha$ when there is only one branch, but not in general.
+\end{itemize}
+
+
+The steps are now as follows:
+\begin{enumerate}
+\item
 This proposition says that if we truncate $f$ at precision $n$ in $X$ and we factorize the truncated polynomial $\bar f$ in $K[[X]][Y]$, we will get the factors of $f$ with precision $n - \kappa$.
 
+\item
 We are interested in computing the factors with precision at least equal to the integrality exponent in $X$ of $f$, we call this number $\IntExpX$. That is, we need
 $n - \kappa \ge \IntExpX$.
 
-In that paper the authors provide the bound $\kappa \le \delta / 2$, where $\delta = 2 \IntExpX$, so $\kappa \le \IntExpX$ and it is enough for us to consider $n \ge 2 \IntExpX$.
+\item In that paper the authors provide the bound $\kappa \le \delta / 2$, where $\delta = 2 \IntExpX$, so $\kappa \le \IntExpX$ and it is enough for us to consider $n \ge 2 \IntExpX$.
 
+\item
 For the computation of the integral basis we also need the singular part of the Puiseux expansions. If we want to compute the Puiseux expansions from the factors $f_1, \dots, f_s$, we would need to compute the factors with precision higher than the integrality exponent.
 
 However if we compute the Puiseux expansions from $\bar f$, the same proposition says that we will obtain the Puiseux expansions with precision at least $\IntExpX$, and hence the singular part will be correctly computed.
 
-Putting everything together, we can truncate the powers of $X$ of $f$ at order two times the integrality exponent and we will be able to compute the correct factors and Puisuex expansions up to the integrality exponent and hence we will compute the correct integral basis.
+\item I am not sure about this last step. In any case, we can compute the singular part of the Puiseux expansions by truncating at three times the integrality exponent. The argument is as follows:
+
+    \begin{enumerate}
+    \item We apply Half-RNP algorithm (page 13) to one factor $F_i$.
+    \item In this case $v_i = v_X({(F_i)}_Y)$ and this is smaller than $\IntExpX$ (the integrality exponent of one branch is smaller than that of the full polynomial).
+    \item $r_i$ may not be smaller than the integrality exponent but we have $r_i \le \alpha$.
+    \item So by the algorithm we need $n \ge v_i + r_i$, and $v_i + r_i \le \alpha + \IntExpX$. That is, we need the factors $F_i$ developed to degree $\alpha + \IntExpX$, and we can get this by computing a factorization of $F$ modulo $\alpha + 2 \IntExpX$.
+    \end{enumerate}
+
+\item Putting everything together, we can truncate the powers of $X$ of $f$ at order two times the integrality exponent and we will be able to compute the correct factors and Puisuex expansions up to the integrality exponent and hence we will compute the correct integral basis.
+
+\end{enumerate}
 
 \section{Local integral basis at the origin}
 
@@ -260,7 +328,7 @@ The argument for truncations in $Y$ is the following:
 $$
 m/n (K - \IntExpY) > \IntExpX.
 $$
-\item This gives 
+\item This gives
 $$K > n/m \IntExpX + \IntExpY,$$
 which is the bound we were looking for (this should be something similar to $2 \IntExpY$, we could do this computation, but the formula we got is good enough).
 \end{enumerate}
