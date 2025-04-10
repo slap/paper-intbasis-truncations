@@ -1,6 +1,8 @@
 cd C:/Users/Santiago/Documents/GitHub/Singular/Singular/LIB
 cd C:/Users/Usuario/Documents/GitHub/Singular/Singular/LIB
+cd C:/Users/slapl/Documents/GitHub/Singular/Singular/LIB
 
+cd /mnt/c/Users/slapl/Documents/GitHub/papers/intbasis-truncations/LIB
 ////////////////////////////////////////////////////////////////////////
 //
 // We study the truncation order for the Puiseux expansions and
@@ -13,7 +15,7 @@ LIB "polyclass.lib";
 LIB "arnoldgit.lib";
 ring R=0,(x,y),ds;
 poly g = (y3 - x2)*(y2-x3)+y26;
-determinacyBound(g);  // 35
+determinacyBound(g);  // 
 
 
 printlevel = 3;

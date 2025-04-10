@@ -1,5 +1,6 @@
 cd C:/Users/Santiago/Documents/GitHub/Singular/Singular/LIB
-
+cd C:/Users/slapl/Documents/GitHub/Singular/Singular/LIB
+cd C:/Users/slapl/Documents/GitHub/papers/intbasis-truncations/LIB
 ////////////////////////////////////////////////////////////////////////
 //
 // We study the truncation order for the Puiseux expansions and
@@ -8,10 +9,10 @@ cd C:/Users/Santiago/Documents/GitHub/Singular/Singular/LIB
 
 printlevel = 3;
 
-
-
-LIB "polyclass.lib";
-LIB "arnoldgit.lib";
+LIB "deltaInvariant.lib";
+LIB "integralbasis.lib";
+LIB "polyclass2.lib";
+LIB "arnoldclassify.lib";
 ring R=0,(x,y),ds;
 poly g = (y11 - x2)*(y13-x3)+y25 + x25;
 map phi = R,x+y^2-y^6, y+y^2+y^6;

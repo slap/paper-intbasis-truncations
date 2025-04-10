@@ -1,0 +1,447 @@
+%\usepackage[draft]{hyperref}
+%\newcommand{\PE}{{\mathcal P}(x)}
+%\newcommand{\PEP}{{\mathcal P}[x]}
+%\usepackage{epsfig}
+%\usepackage{pstricks}
+%\usepackage{pst-node}
+%\usepackage{pst-tree}
+%\usepackage{pst-grad}
+%\usepackage{pst-plot}
+%\DeclareMathOperator{\IntegralElementSimple}{IntegralElementSimple}
+%\DeclareMathOperator{\LocalIntegralBasisElement}{LocalIntegralBasisElement}
+
+\documentclass[a4paper,11pt,reqno]{amsart}%
+\usepackage{multicol}
+\usepackage{bm}
+\usepackage[utf8x]{inputenc}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{synttree}
+\usepackage{amsthm}
+\usepackage{algorithm}
+%\usepackage{algpseudocode}
+%\usepackage[noend]{algorithmic}
+\usepackage[noend]{algpseudocode}
+
+\usepackage{todonotes}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{hyperref}%
+\usepackage{enumitem}
+\setcounter{MaxMatrixCols}{30}
+%TCIDATA{OutputFilter=latex2.dll}
+%TCIDATA{Version=5.00.0.2570}
+%TCIDATA{LastRevised=Wednesday, February 26, 2014 20:49:07}
+%TCIDATA{<META NAME="GraphicsSave" CONTENT="32">}
+%TCIDATA{<META NAME="SaveForMode" CONTENT="1">}
+\allowdisplaybreaks
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\theoremstyle{definition}
+\theoremstyle{plain}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{theorem}[defn]{Theorem}
+\newtheorem{proposition}[defn]{Proposition}
+\newtheorem{lemma}[defn]{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}[defn]{Remark}
+\newtheorem{example}[defn]{Example}
+\newtheorem{notation}[defn]{Notation}
+\DeclareMathOperator{\LocalIntegralBasis}{LocalIntegralBasis}
+\DeclareMathOperator{\IntegralElement}{IntegralElement}
+\DeclareMathOperator{\IntegralBasisIterative}{\mathtt{IntegralBasisIterative}}
+\DeclareMathOperator{\TruncatedFactor}{\mathtt{IntegralBasisElement}}
+\DeclareMathOperator{\Splitting}{Splitting}
+\DeclareMathOperator{\BlockSplitting}{BlockSplitting}
+\DeclareMathOperator{\SegmentSplitting}{SegmentSplitting}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Sing}{Sing}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\Int}{Int}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\degree}{degree}
+\DeclareMathOperator{\rad}{rad}
+\DeclareMathOperator{\Ker}{ker}
+\DeclareMathOperator{\TQR}{Q}
+\newcommand{\singular}{{\sc Singular}}
+\newcommand{\maple}{{\sc Maple}}
+\newcommand{\cc}{{\mathbf c}}
+\newcommand{\Q}{{\mathbb Q}}
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\R}{{\mathbb R}}
+\newcommand{\Z}{{\mathbb Z}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\Px}{{\mathcal{P}_X}}
+\newcommand{\bigO}{\mathcal{O}}
+\newcommand\ct[1]{\text{\rmfamily\upshape #1}}
+\newcommand{\IntExpX}{\ct{IntExp}_X}
+\newcommand{\IntExpY}{\ct{IntExp}_Y}
+
+\usepackage{accents}
+\newcommand{\dbtilde}[1]{\accentset{\approx}{#1}}
+\newcommand{\vardbtilde}[1]{\tilde{\raisebox{0pt}[0.85\height]{$\tilde{#1}$}}}
+
+
+
+
+\begin{document}
+\title[Good truncations for computing integral bases]{Good truncations for computing integral bases}
+%\author{D. Basson, J. Boehm, S. Laplagne, M. Marais}
+
+\begin{abstract}
+We provide good truncation bound that speed up the computation of integral basis.
+\end{abstract}
+\maketitle
+
+\section{Introduction}
+\label{section:introduction}
+
+Integral basis are very useful in real life.
+
+Given a polynomial $f \in K[x,y]$ monic in $Y$, we wish to compute the local contribution to the integral basis at the origin or the local integral basis at the origin.
+
+
+\section{The determinacy}
+\label{section:directApproach}
+
+In this section we show:
+\begin{enumerate}
+\item An upper bound for the determinacy can be found fast reducing the polynomial modulo any prime number $p$.
+\item If we truncate the polynomial $f$ by standard degree at the determinacy, the characteristic exponents of $f$ will not change.
+\item The integrality exponent of $f$ can be computed from the characteristic exponents, so we can compute very fast the integrality exponent.
+\end{enumerate}
+
+Remark: the coefficients of the Puiseux expansions might change, but in all examples we tried, the coefficients don't change after truncation.
+
+\section{Local contribution to the integral basis at the origin}
+
+In this section we focus on the computation of the local contribution at the origin.
+
+We use the following result.
+
+\begin{proposition}\label{prop:factors}(See \cite[Proposition 23]{poteaux2021}.)
+Let $F \in K[[X]][Y]$, separable of degree $d$. Suppose given a modular factorisation
+\begin{equation}\label{factorization}
+F \equiv  F_0 F_1 \dots F_s \mod X^{N_0}, \ N_0 > 2\kappa
+\end{equation}
+where $F_0 \in K[[X]][Y]$ is a unit and for all $i \ge 1$ either $F_i$ or its reciprocal polynomial $\tilde F_i$ is monic, and
+$$
+\kappa = \kappa(F_0,..., F_s) := \max_{I, J} \kappa(F_I, F_J),
+$$
+the maximum of the lifting orders being taken over all disjoint subsets $I, J \subset {0,\dots,s}$,
+with $F_I = \prod_{i\in I} F_i$. Then there exists uniquely determined analytic factors $F_0^*, F_1^*,\dots, F_k^*$ such that $F = F_0^* F_1^* \cdots F_k^*$, where
+$$
+F_i^* \equiv F_i \mod X^{N_0'-\kappa}.
+$$
+Moreover, starting from (\ref{factorization}), we can compute the $F_i^\star$ up to any precision $N \ge N_0 - \kappa$ in $\bigO(dN)$ operations over $K$.
+\end{proposition}
+
+For computing Puiseux expansions we use the following algorithm:
+
+\begin{algorithm}[H]
+\caption{Half-RNP($H, P, n, \pi$)}
+\begin{algorithmic}[1]
+\State \textbf{Input:} $P \in \mathbb{K}[Z]$ irreducible;
+$H \in \mathbb{K}_P[X, Y]$ separable and monic in $Y$, with $d := \deg_Y(H) > 0$;
+$n \in \mathbb{N}$ (truncation order); $\pi$ the current truncated parametrisation (initial call: $P = Z$, $\pi = (X, Y)$)
+\State \textbf{Output:} All RPEs $R_i$ of $H$ such that $n - v_i \ge r_i$, with precision $(n - v_i)/e_i \ge r_i/e_i$
+\end{algorithmic}
+\end{algorithm}
+
+The notation in the algorithm is as follows:
+\begin{itemize}
+\item $\delta = \upsilon_X \left( \operatorname{Res}_Y(F, F_Y) \right)$
+\item We can consider $\mathbb{K}_P = \mathbb{Q}$, and $H$ is our polynomial $f$.
+\item $v_i = v_X({(F_i)}_Y)$. If $f$ has only only one branch, then this number is the integrality exponent. If $f$ has many branches, then $v_i$ can be bigger than the integrality exponent (
+\item The integer $e_i \in\mathbb{N}$ is the ramification index of $F_i$, equal to the largest denominator or the number of expansions in the branch.
+\item The \emph{regularity index} \( r \) of a Puiseux series \( S \) of \( F \) with ramification index \( e \) is the least integer \( N \ge \min(0, e \upsilon_X(S)) \) such that, if
+\[
+\left\lceil S \right\rceil^{N/e} = \left\lceil S' \right\rceil^{N/e}
+\]
+for some Puiseux series \( S' \) of \( F \), then \( S = S' \). We call \( \left\lceil S \right\rceil^{r/e} \) the \emph{singular part} of \( S \) in \( F \).
+
+\item We denote by \( (R_i)_{1 \le i \le \rho} \) the rational Puiseux expansions of \( F \). To any \( R_i \), we will always associate the following notations:
+\begin{itemize}
+    \item \( e_i \), \( f_i \), and \( r_i \) will respectively denote the ramification index, the residual degree, and the regularity index of \( R_i \),
+    \item we define \( v_i \in \mathbb{Q} \) as \( \upsilon_X(F_Y(S)) \), for any Puiseux series \( S \) associated to \( R_i \).
+\end{itemize}
+The same notations will be used if \( S_i \) (or \( S_{ijk} \)) denotes a Puiseux series. If we omit the index \( i \), we will use the notations \( e \), \( f \), and \( r \) for the first three integers.
+
+\end{itemize}
+
+To give general bounds for these numbers we define a new number:
+$$
+\alpha = \sum r_i,
+$$
+the sum taken over all Puiseux branches. This number is bigger than the integrality exponent but not much bigger. And it is clear that $r_i \le \alpha$.
+
+For example, if we have only one branch with seven Puiseux expansions and one characteristic exponent $1/7$, then $\alpha = 1$ and the characteristic exponent is $6/7$.
+
+We have:
+\begin{itemize}
+\item $r_i \le \alpha$ (clear by definition)
+\item $v_i \le \IntExpX \le \alpha$ when there is only one branch, but not in general. Proof: if $F_i = (Y-\gamma_1) \dots (Y-\gamma_r)$ then $(F_i)_Y(\gamma_1) = (1+\gamma_1)(\gamma_2 - \gamma_1)\cdots (\gamma_r - \gamma_1) + 0 + 0 + \dots + 0$. The first factor in the first term has order 0 at $X$, so the order of the product is equal to $\IntExpX$ (it is the same formula).
+\end{itemize}
+
+
+The steps are now as follows:
+\begin{enumerate}
+\item
+This proposition says that if we truncate $f$ at precision $n$ in $X$ and we factorize the truncated polynomial $\bar f$ in $K[[X]][Y]$, we will get the factors of $f$ with precision $n - \kappa$.
+
+\item
+We are interested in computing the factors with precision at least equal to the integrality exponent in $X$ of $f$, we call this number $\IntExpX$. That is, we need
+$n - \kappa \ge \IntExpX$.
+
+\item In that paper the authors provide the bound $\kappa \le \delta / 2$, where $\delta = 2 \IntExpX$, so $\kappa \le \IntExpX$ and it is enough for us to consider $n \ge 2 \IntExpX$.
+
+\item
+For the computation of the integral basis we also need the singular part of the Puiseux expansions. If we want to compute the Puiseux expansions from the factors $f_1, \dots, f_s$, we would need to compute the factors with precision higher than the integrality exponent.
+
+However if we compute the Puiseux expansions from $\bar f$, the same proposition says that we will obtain the Puiseux expansions with precision at least $\IntExpX$, and hence the singular part will be correctly computed.
+
+\item I am not sure about this last step. In any case, we can compute the singular part of the Puiseux expansions by truncating at $\alpha + 2 \times \IntExpX$ (a little larger than $3 \times \IntExpX$). The argument is as follows:
+
+    \begin{enumerate}
+    \item We apply Half-RNP algorithm (page 13) to one factor $F_i$.
+    \item In this case $v_i = v_X({(F_i)}_Y)$ and this is smaller than $\IntExpX$ (the integrality exponent of one branch is smaller than that of the full polynomial).
+    \item $r_i$ may not be smaller than the integrality exponent but we have $r_i \le \alpha$.
+    \item So by the algorithm we need $n \ge v_i + r_i$, and $v_i + r_i \le \alpha + \IntExpX$. That is, we need the factors $F_i$ developed to degree $\alpha + \IntExpX$ and by Proposition \ref{prop:factors} we can get this by computing a factorization of $F$ modulo $\alpha + 2 \IntExpX$.
+    \end{enumerate}
+
+\item Putting everything together, we can truncate the powers of $X$ of $f$ at order $\alpha + 2 \IntExpX$ and we will be able to compute the correct factors up to the integrality exponent and the singular part of the Puiseux expansions and hence we will compute the correct integral basis.
+
+\end{enumerate}
+
+\section{Local integral basis at the origin}
+
+When we are interested in the local integral basis at the origin we can also truncate powers of $Y$.
+
+One possible approach is the following:
+\begin{enumerate}
+\item Applying again \cite[Proposition 23]{poteaux2021}  in terms of $Y$ with high enough precision, we obtain that the factors at the origin are uniquely determined and they are the same factors as the factors obtained when we develop the factorization in terms of $X$, so we are able to recover the correct information.
+\item The factor $g_0$ however corresponds to the branches of $f$ at $Y = 0$ and the factor $f_0$ corresponds to the branches of $f$ at $X = 0$, so we cannot recover the Puiseux expansions of $f_0$ from the Puiseux expansions of $g_0$.
+\item Hence when we apply a truncation in $Y$ we can expect to compute correctly the local integral basis but not the local contribution.
+\end{enumerate}
+
+We now formalize these ideas and calculate the required precision. For this, we need to be able to go from Puiseux expansions in $X$ to Puiseux expansions in $Y$ ($N_0$ and $\kappa$ are the numbers to be determined, and they are possibly different for $X$-truncations and $Y$-truncations).
+
+\begin{enumerate}
+\item We start with a polynomial $F \in K[X,Y]$ with analytic factorization in $K[[X]][Y]$:
+$$
+F = F_0^* F_1^* \dots F_s^*,$$
+where $F_k^* \in K[[X]][Y]$ and $F_0^*$ is the unit corresponding to the branches outside the origin). Let $d_k$ be the degree in $Y$ of $F_k^*$ and let $e_k$ be the largest denominator of the Puiseux expansions of $F_k^*$.
+
+\item If we have a factorization
+\begin{equation} \label{FXfactors}
+F \equiv  F_0 F_1 \dots F_s \mod X^{N_0},
+\end{equation}
+then by Proposition \ref{prop:factors}, $F_k \equiv F_k^* \mod X^{N_0 - \kappa}$.
+
+
+\item Now we truncate in $Y$. Let $\overline{F}^{Y}$ be the truncation of $F$ modulo $Y^{N_0}$. We can factorize this polynomial in $K[[X]][Y]$ as
+$$
+\overline{F}^{Y} \equiv  {H}_0 {H}_1 \dots {H}_s \mod X^{N_0},
+$$
+and we want to know if ${H}_k \equiv F^*_k \mod X^{N_0 - \kappa}$ for $k > 0$ (we cannot expect $H_0 \equiv F_0^* \mod X^{N_0 - \kappa}$).
+
+\item We can also factorize $\overline{F}^{Y}$ in $K[[Y]][X]$:
+$$\overline{F}^{Y} \equiv G_0 G_1 \dots G_s \mod Y^{N_0}.$$
+
+\item Applying Proposition \ref{prop:factors} to ${F}$ in $K[[Y]][X]$  we obtain that
+$$G_k \equiv G_k^* \mod Y^{N_0 - \kappa}$$
+where $G_k^*$ are the analytic factors of $F$ in $K[[Y]][X]$.
+
+By the same argument $G_k$ agrees with the analytic factors of $\overline{F}^{Y} \mod Y^{N_0 - \kappa}$.
+Hence: the analytic factors in $K[[Y]][X]$ of $F$ and $\overline{F}^{Y}$ are the same modulo $Y^{N_0 - \kappa}$.
+
+The question is what precision do we get when we go from these factors to factors in $K[[X]][Y]$.
+
+\item Now the key argument is: for fixed $1 \le k \le s$, there is a reparametrization (or coordinates change) $(\alpha(X,Y), \beta(X,Y))$ that will transform $G_k^*$, into the corresponding analytic factor $F_k^*$ of $F \in K[[X]][Y]$, that is
+$$
+G_k^*(\alpha(X,Y), \beta(X,Y)) = F_k^*(X,Y).
+$$
+
+Modulo $X^{N_0-\kappa}$, we obtain from (\ref{FXfactors}):
+$$
+G_k^*(\alpha(X,Y), \beta(X,Y)) \equiv F_i(X,Y) \mod X^{N_0-\kappa}.
+$$
+
+We have to show that if we apply this same reparametrization to $G_k$ we will obtain
+$$G_k(\alpha(X,Y), \beta(X,Y)) \equiv H_k \equiv F_k \mod X^{N_0 - \kappa}.$$
+
+\item By \cite[Theorem 5.17]{JP}, we can write
+$$
+G_k(x,y) = \prod_{i=1}^n (x - \eta(\zeta^i y^{1/n})) = \prod_{i=1}^n (x - \eta(\zeta^i u)),
+$$
+where $\zeta$ is a primitive $n$–th root of unity and $y = u^n$. The corresponding parametrization of the singularity is
+$$
+(\eta(u), u^n)
+$$
+and we want to compute the parametrization $(t^m, \gamma(t))$.
+
+That is, we want to invert th function $x = \eta(u)$ to obtain $y = \gamma(t)$.
+
+So let
+$$\eta(u) = (a_0 u^{m_0} + a_1 u^{m_0+1} + a_2 u^{m_0+2} + \dots,$$
+$a_0 \neq 0$ (here $n = e_k$ and $m_0 = d_k$).
+
+To invert this transformation we note
+\begin{align*}
+\eta(u) &= u^{m_0} (a_0 + a_1 u + a_1 u^2 + \dots) \\
+        &= \left(u \sqrt[m_0]{a_0 + a_1 u + a_2 u^2 + \dots}\right)^{m_0}
+\end{align*}
+
+Let
+$$
+b_0 + b_1 u + b_2 u^2 + \dots = \sqrt[m_0]{a_0 + a_1 u + a_2 u^2 + \dots}
+$$
+be an $m_0$-th root of $a_0 + a_1 u + a_2 u^2 + \dots$. In computations, if $a_0 + a_1 u + a_1 u^2 + \dots$ is developed up to precision $c$, then also $b_0 + b_1 U + b_2 U^2 + \dots$ can be computed with precision $c$.
+
+Set $q(u) = u (b_0  + b_1 u + b_2 u^2 + \dots) = b_0 u + b_1 u^2 + b_2 u^3 + \dots$ (hence $\eta(u) = q(u)^{m_0}$). Again, $q(u)$ can be computed with precision $c$.
+
+Finally let $p(t) = c_1 t + c_2 t^2 + \dots$ be the composite inverse of $q(u)$ (which can also be computed with precision $c$), that is $q(p(t)) = t$ and hence $u = p(t)$.
+
+We obtain the new parametrization
+$$(t^{m_0}, p(t)^n).$$
+
+As we have seen, all these transformations can be done without precision loss, hence if the $x$-Puiseux expansions of $G^*_i(x,y)$ are known with precision $c/n$, then the $y$-Puiseux expansions of $F^*_i(x,y)$ are known with precision $c/m$.
+%
+%Inverting the series, we obtain
+%$$
+%T =  (x(T), y(T)) = (T^{m_0} (a_0 + a_1 T^{m_1 - m_0} + \dots), T^n)
+%$$
+
+\end{enumerate}
+
+\begin{remark}
+The argument for truncations in $Y$ is the following:
+\begin{enumerate}
+\item Let $\bar F$ be the truncation of $F$ at some degree $K \ge \alpha_Y + 2 \IntExpY$ in $Y$. We want to know a good $K$.
+\item By Proposition \ref{prop:factors} we can compute the factors in $K[[X]][Y]$ correct up to degree $n = K - \IntExpY \ge \alpha + \IntExpY$. Consider the $i$-th branch. $n - v_i \ge n - \IntExpY = K - 2 \IntExpY \ge \alpha \ge r_i$. Then by Algorithm \ref{algo:HalfRNP}, we can compute the $Y$-Puiseux expansions of this branch correct up to degree $(n - v_i) / e_i$. Let $D = n - v_i$.
+\item Assume that the Puiseux expansions in $X$ of the $i$-th branch have denominator $\epsilon_i$ (the Puiseux expansions in $Y$ have denominator $e_i$). Then the polynomial $\eta(U)$ corresponding to that branch is correct up to degree $D$: the Puiseux expansion $\eta(Y^{1/m})$ is correct to degree $D/m$ and we take $U = Y^{1/m}$.
+\item Applying the inverse formula we get a polynomial $\gamma(T)$ which is correct up to the same degree $D$ in $T$. Now we replace $T = X^{1/n}$ to get the Puiseux expansions in $X$, $\gamma(X^{1/n})$. We get correct Puiseux expansions up to degree $D/n$.
+\item We need this number $D/\epsilon_i$ to be bigger than $\IntExpX$. So we get $D \ge \epsilon_i\IntExpX$ and then $K - \IntExpY - v_i \ge n \IntExpY$. So we get $K \ge \epsilon_i\IntExpX + \IntExpY + v_i$.
+
+\item Consider $\epsilon$ the largest $\epsilon_i$ over all branches. So we need 
+$$K > \epsilon \IntExpX + \IntExpY,$$
+which is the bound we were looking for.
+ 
+\end{enumerate}
+
+\textbf{Note:} Going through Puiseux expansions it seems that we get a large degree bound. 
+It sounds plausible to get a condition $D e_i / \epsilon_i \ge \IntExpX$ instead of the condition above, and in this case we would get a bound
+$$K > \epsilon/e \IntExpX + \IntExpY + v,$$
+where $\epsilon/e$ is the largest value among all $\epsilon_i / e_i$ and $v$ is the largest $v_i$. 
+
+This sounds like a more reasonable bound. It seems that we need to invert the factors without going through Puiseux expansions to get a bound like this one.
+
+
+\end{remark}
+
+
+
+
+
+%We apply Proposition \ref{prop:factors} considering $F \in K[[Y]][X]$.
+%We take $N > \max{2 \IntExpX, 2 \IntExpY}$. Then $N$ satisfies the hypothesis (\ref{factorization}) so if we factorize $\overline{f}^Y$, we obtain factors $G_0, G_1, \dots, G_s$ such that  $$F \equiv G_0 G_1 \dots G_s \mod X^N$$
+%and $G_i$ agrees with the factors of $F$ up to degree at least $\max{\IntExpX, \IntExpY}$.
+%
+%The question is now how to go from $G_i$ to $F_i$.
+%For this purpose, we fix $i$ and consider the factorization
+%$G_i = (X - \eta_1(Y)) \dots (X - \eta_n(Y))$,
+%where $\eta_1(Y), \dots, \eta_n(Y)$ are the Puiseux expansions of $G_i$.
+
+
+\section{Timings}
+
+We get very good timings.
+
+\bibliographystyle{plain}
+\bibliography{mybib}
+
+
+
+\end{document}
+
+
+We now formalize these ideas and calculate the required precision. For this, we need to be able to go from Puiseux expansions in $X$ to Puiseux expansions in $Y$.
+
+\begin{enumerate}
+\item We start with a polynomial $F$ with analytic factorization
+$$
+F = F_0^* F_1^* \dots F_s^*$$
+($F_i^* \in K[[X]][Y]$ and $F_0^*$ is the unit corresponding to the branches outside the origin).
+
+\item Let $\overline{F}^X$ be the truncation of $F$ modulo $X^{N_0}$, for some $N_0 \in \N$. Applying any factorization algorithm to $\overline{F}^X$ (Newton-Puiseux algorithm or Hensel lifting) we can obtain a factorization
+\begin{equation} \label{FXfactors}
+F \equiv \overline{F}^X \equiv  F_0 F_1 \dots F_s \mod X^{N_0}.
+\end{equation}
+
+
+\item For this factorization, Proposition \ref{prop:factors} says that
+$$F_i \equiv F_i^* \mod X^{N_0 - \kappa}$$
+for $i > 0$.
+
+\item Now we truncate in $Y$. Let $\overline{F}^{XY}$ be the truncation of $\overline{F}^X$ modulo $Y^{N_0}$. We can factorize this polynomial in $K[[X]][Y]$ as
+$$
+\overline{F}^{XY} =  \tilde{F}_0 \tilde{F}_1 \dots \tilde{F}_s,
+$$
+and we want to know if $\tilde{F}_i \equiv F_i \mod X^{N_0}$ for $i > 0$ (we cannot expect $\tilde{F}_0 \equiv F_0 \mod X^{N_0}$).
+
+\item Applying again Proposition \ref{prop:factors} to $\overline{F}^X$ in $K[[Y]][X]$  we obtain that if we factorize $\overline{F}^{XY} \equiv  G_0 G_1 \dots G_s$, $G_i \in K[[Y]][X]$ and
+$$
+\overline{F}^{X} \equiv \overline{F}^{XY} \equiv  G_0 G_1 \dots G_s \mod Y^{N_0}
+$$
+then
+$$G_i \equiv G_i^* \mod Y^{N_0 - \kappa}$$
+for all $i$, where $G_i^*$ are the analytic factors of $\overline{F}^{X} \in K[[Y]][X]$.
+
+\item Now the key argument is: for fixed $1 \le i \le s$, there is a reparametrization (or coordinates change) $(\alpha(X,Y), \beta(X,Y))$ that will transform $G_i^*$, into the corresponding analytic factor $(\overline{F}^{X})_i^*$ of $\overline{F}^{X} \in K[[X]][Y]$, that is
+$$
+G_i^*(\alpha(X,Y), \beta(X,Y)) = (\overline{F}^{X})_i^*(X,Y).
+$$
+
+Modulo $X^{N_0-\kappa}$, we obtain from (\ref{FXfactors}):
+$$
+G_i^*(\alpha(X,Y), \beta(X,Y)) \equiv (\overline{F}^{X})_i^* \equiv F_i \mod X^{N_0-\kappa}.
+$$
+
+We have to show that if we apply this same reparametrization to $G_i$ we will obtain
+$$G_i(\alpha(X,Y), \beta(X,Y)) \equiv F_i \mod X^{N_0 - \kappa}.$$
+\end{enumerate}
+
+
+\subsection{Second try}
+
+Another attempt. We start with a polynomial $F$.
+
+\begin{enumerate}
+\item We can factorize $F$ in $K[[X]][Y]$:
+$$
+F = F_0^* F_1^* \dots F_s^*
+$$
+and we can also factorize in $K[[Y]][X]$:
+$$
+F = G_0^* G_1^* \dots G_s^*
+$$
+(the factors correspond to the brances so we get the same number).
+
+\item For $1 \le i \le s$, there exists $\alpha_i(X, Y), \beta_i(X,Y)$ such that
+$$
+F_i^*(X, Y) = G_i^*(\alpha_i(X, Y), \beta_i(X, Y))
+$$
+
+\item If we factorize $F$ in $K[[Y]][X]$ modulo $Y^N$, we obtain
+$$
+F \equiv G_0 G_1 \dots G_s \mod Y^N,
+$$
+and by Proposition \ref{prop:factors}, $G_i \equiv G_i^\star \mod Y^{N-\kappa}$.
+
+NOTE: Probably we dont need this factorization, because we never compute this factorization.
+
+\item Now we apply the transformation to the $G_i$ and we have to show that this gives a factorization of $F$ modulo $X^N$.
+Or maybe we have to factorize $F(\alpha^{-1}(X, Y), \beta^{-1}(X, Y))$??
+\end{enumerate}
