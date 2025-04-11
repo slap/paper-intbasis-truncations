@@ -321,20 +321,24 @@ As we have seen, all these transformations can be done without precision loss, h
 \begin{remark}
 The argument for truncations in $Y$ is the following:
 \begin{enumerate}
-\item Let $\bar F$ be the truncation of $F$ at some degree $K > \alpha_Y + 2 \IntExpY$ in $Y$. We want to know a good $K$.
-\item By Proposition \ref{prop:factors} we can compute the factors in $K[[X]][Y]$ correct up to degree $K - \IntExpY \ge \alpha + \IntExpY$, and hence we can compute the $Y$-Puiseux expansions of the truncated polynomial correct up to degree $D = (K - \IntExpY) / e_i$.
-\item Consider a branch where the Puiseux expansions in $X$ have denominator $n$ and the Puiseux expansions in $Y$ have denominator $m =e_i$. Then the polynomial $\eta(U)$ corresponding to that branch is correct up to degree $D$ (the Puiseux expansion $\eta(Y^{1/m})$ is correct to degree $D/m$ and we take $U = Y^{1/m}$).
+\item Let $\bar F$ be the truncation of $F$ at some degree $K \ge \alpha_Y + 2 \IntExpY$ in $Y$. We want to know a good $K$.
+\item By Proposition \ref{prop:factors} we can compute the factors in $K[[X]][Y]$ correct up to degree $n = K - \IntExpY \ge \alpha + \IntExpY$. Consider the $i$-th branch. $n - v_i \ge n - \IntExpY = K - 2 \IntExpY \ge \alpha \ge r_i$. Then by Algorithm \ref{algo:HalfRNP}, we can compute the $Y$-Puiseux expansions of this branch correct up to degree $(n - v_i) / e_i$. Let $D = n - v_i$.
+\item Assume that the Puiseux expansions in $X$ of the $i$-th branch have denominator $\epsilon_i$ (the Puiseux expansions in $Y$ have denominator $e_i$). Then the polynomial $\eta(U)$ corresponding to that branch is correct up to degree $D$: the Puiseux expansion $\eta(Y^{1/m})$ is correct to degree $D/m$ and we take $U = Y^{1/m}$.
 \item Applying the inverse formula we get a polynomial $\gamma(T)$ which is correct up to the same degree $D$ in $T$. Now we replace $T = X^{1/n}$ to get the Puiseux expansions in $X$, $\gamma(X^{1/n})$. We get correct Puiseux expansions up to degree $D/n$.
-\item We need this number $D/n$ to be bigger than $\IntExpX$. Question: can we request only $D > \IntExpX$? (that is, if we know the expansions up to degree $D/n$ can we recover the factor to degree $D$? We assume it is possible. If not, we should take $1/n$ instead of $m/n$ in the following steps.
-\item Consider the smaller $m/n$ over all branches. So we need $D m/n > \IntExpX$, hence
-$$
-m/n (K - \IntExpY) > \IntExpX.
-$$
-\item This gives
-$$K > n/m \IntExpX + \IntExpY,$$
-which is the bound we were looking for (this should be something similar to $2 \IntExpY$, we could do this computation, but the formula we got is good enough).
+\item We need this number $D/\epsilon_i$ to be bigger than $\IntExpX$. So we get $D \ge \epsilon_i\IntExpX$ and then $K - \IntExpY - v_i \ge n \IntExpY$. So we get $K \ge \epsilon_i\IntExpX + \IntExpY + v_i$.
+
+\item Consider $\epsilon$ the largest $\epsilon_i$ over all branches. So we need 
+$$K > \epsilon \IntExpX + \IntExpY,$$
+which is the bound we were looking for.
+ 
 \end{enumerate}
 
+\textbf{Note:} Going through Puiseux expansions it seems that we get a large degree bound. 
+It sounds plausible to get a condition $D e_i / \epsilon_i \ge \IntExpX$ instead of the condition above, and in this case we would get a bound
+$$K > \epsilon/e \IntExpX + \IntExpY + v,$$
+where $\epsilon/e$ is the largest value among all $\epsilon_i / e_i$ and $v$ is the largest $v_i$. 
+
+This sounds like a more reasonable bound. It seems that we need to invert the factors without going through Puiseux expansions to get a bound like this one.
 
 
 \end{remark}
