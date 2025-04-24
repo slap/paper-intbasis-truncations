@@ -1,6 +1,9 @@
 cd C:/Users/Santiago/Documents/GitHub/Singular/Singular/LIB
 cd C:/Users/slapl/Documents/GitHub/Singular/Singular/LIB
 cd C:/Users/slapl/Documents/GitHub/papers/intbasis-truncations/LIB
+
+cd /mnt/c/Users/Usuario/Documents/GitHub/papers/intbasis-truncations/LIB
+
 ////////////////////////////////////////////////////////////////////////
 //
 // We study the truncation order for the Puiseux expansions and
