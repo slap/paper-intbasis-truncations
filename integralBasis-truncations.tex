@@ -170,6 +170,17 @@ $n \in \mathbb{N}$ (truncation order); $\pi$ the current truncated parametrisati
 \end{algorithmic}
 \end{algorithm}
 
+There seems to be an error in the bounds here, which don't agree with the following theorem in that same paper:
+
+\begin{lemma}(\cite[Lemma 3.19]{poteaux2021})
+Let $n_0 \in \mathbb{N}$. To compute the RPE $R_i$ with certified precision
+$n_0 > \frac{r_i}{e_i}$, it is necessary and sufficient to run \emph{Half-RNP}
+with truncation bound $n = n_0 + v_i$. In particular, to ensure the computation
+of the singular part of $R_i$, it is necessary and sufficient to use a truncation
+bound $n > N_i$.
+\end{lemma}
+
+We use the bounds in the Lemma, which have been confirmed by the authors and by computational experiments.
 
 To give general bounds for the precision $n$ required we define a new number:
 $$
@@ -181,7 +192,7 @@ For example, if we have only one branch with seven Puiseux expansions and one ch
 We have:
 \begin{itemize}
 \item $r_i \le \alpha$ (clear by definition)
-\item $v_i \le \IntExpX \le \alpha$ when there is only one branch, but not in general. 
+\item $v_i \le \IntExpX \le \alpha$ when there is only one branch, but not in general.
 \end{itemize}
 
 Based on the last observation, we define $\tilde v_i = \upsilon_X((F_i)_Y(S))$, for any Puiseux series \( S \) associated to \( R_i \). This number will be used when we apply Algorithm \ref{algo:halfRNP} to only one branch of $F$.
@@ -324,23 +335,23 @@ As we have seen, all these transformations can be done without precision loss, h
 The argument for truncations in $Y$ is the following:
 \begin{enumerate}
 \item Let $\bar F$ be the truncation of $F$ at some degree $K \ge \alpha_Y + 2 \IntExpY$ in $Y$. We want to know a good $K$.
-\item By Proposition \ref{prop:factors} we can compute the factors in $K[[X]][Y]$ correct up to degree $n = K - \IntExpY \ge \alpha + \IntExpY$. Consider the $i$-th branch. $n - \tilde v_i \ge n - \IntExpY = K - 2 \IntExpY \ge \alpha \ge r_i$. Then by Algorithm \ref{algo:halfRNP}, we can compute the $Y$-Puiseux expansions of this branch correct up to degree $(n - \tilde v_i) / e_i$. Let $D = n - \tilde v_i$.
-\item Assume that the Puiseux expansions in $X$ of the $i$-th branch have denominator $\epsilon_i$ (the Puiseux expansions in $Y$ have denominator $e_i$). Then the polynomial $\eta(U)$ corresponding to that branch is correct up to degree $D$: the Puiseux expansion $\eta(Y^{1/m})$ is correct to degree $D/m$ and we take $U = Y^{1/m}$.
-\item Applying the inverse formula we get a polynomial $\gamma(T)$ which is correct up to the same degree $D$ in $T$. Now we replace $T = X^{1/\epsilon_i}$ to get the Puiseux expansions in $X$, $\gamma(X^{1/\epsilon_i})$. We get correct Puiseux expansions up to degree $D/\epsilon_i$.
-\item We need this number $D/\epsilon_i$ to be bigger than $\IntExpX$. So we get $D \ge \epsilon_i\IntExpX$ and then $K - \IntExpY - \tilde v_i \ge \epsilon_i \IntExpY$. So we get $K \ge \epsilon_i\IntExpX + \IntExpY + \tilde v_i$.
+\item By Proposition \ref{prop:factors} we can compute the factors in $K[[X]][Y]$ correct up to degree $n = K - \IntExpY \ge \alpha + \IntExpY$. Consider the $i$-th branch. $n - \tilde v_i \ge n - \IntExpY = K - 2 \IntExpY \ge \alpha \ge r_i$. Then by Algorithm \ref{algo:halfRNP}, we can compute the $Y$-Puiseux expansions of this branch correct up to degree $n - \tilde v_i$. Let $D = n - \tilde v_i$.
+\item Assume that the Puiseux expansions in $X$ of the $i$-th branch have denominator $\epsilon_i$ (the Puiseux expansions in $Y$ have denominator $e_i$). Then the polynomial $\eta(U)$ corresponding to that branch is correct up to degree $De_i$: the Puiseux expansion $\eta(Y^{1/{e_i}})$ is correct to degree $D$ and we take $U = Y^{1/{e_i}}$.
+\item Applying the inverse formula we get a polynomial $\gamma(T)$ which is correct up to the same degree $De_i$ in $T$. Now we replace $T = X^{1/\epsilon_i}$ to get the Puiseux expansions in $X$, $\gamma(X^{1/\epsilon_i})$. We get correct Puiseux expansions up to degree $De_i/\epsilon_i$.
+\item We need this number $De_i/\epsilon_i$ to be bigger than $\IntExpX$. So we get $D \ge \frac{\epsilon_i}{e_i}\IntExpX$ and then $K - \IntExpY - \tilde v_i \ge \frac{\epsilon_i}{e_i} \IntExpY$. So we get $K \ge \frac{\epsilon_i}{e_i}\IntExpX + \IntExpY + \tilde v_i$.
 
-\item Consider $\epsilon$ the largest $\epsilon_i$ over all branches. So we need
-$$K > \epsilon \IntExpX + \IntExpY + ,$$
+\item Consider $\frac{\epsilon}{e}$ the largest $\frac{\epsilon_i}{e_i}$ over all branches. So we need
+$$K > \frac{\epsilon}{e} \IntExpX + 2 \IntExpY,$$
 which is the bound we were looking for.
 
 \end{enumerate}
 
-\textbf{Note:} Going through Puiseux expansions it seems that we get a large degree bound.
-It sounds plausible to get a condition $D e_i / \epsilon_i \ge \IntExpX$ instead of the condition above, and in this case we would get a bound
-$$K > \epsilon/e \IntExpX + \IntExpY + v,$$
-where $\epsilon/e$ is the largest value among all $\epsilon_i / e_i$ and $v$ is the largest $v_i$.
-
-This sounds like a more reasonable bound. It seems that we need to invert the factors without going through Puiseux expansions to get a bound like this one.
+%\textbf{Note:} Going through Puiseux expansions it seems that we get a large degree bound.
+%It sounds plausible to get a condition $D e_i / \epsilon_i \ge \IntExpX$ instead of the condition above, and in this case we would get a bound
+%$$K > \epsilon/e \IntExpX + \IntExpY + v,$$
+%where $\epsilon/e$ is the largest value among all $\epsilon_i / e_i$ and $v$ is the largest $v_i$.
+%
+%This sounds like a more reasonable bound. It seems that we need to invert the factors without going through Puiseux expansions to get a bound like this one.
 
 
 \end{remark}
