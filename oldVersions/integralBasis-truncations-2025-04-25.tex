@@ -247,7 +247,7 @@ We now formalize these ideas and calculate the required precision. For this, we 
 \item We start with a polynomial $F \in K[X,Y]$ with analytic factorization in $K[[X]][Y]$:
 $$
 F = F_0^* F_1^* \dots F_s^*,$$
-where $F_k^* \in K[[X]][Y]$ and $F_0^*$ is the unit corresponding to the branches outside the origin). Let $d_k$ be the degree in $Y$ of $F_k^*$ and let $e_k$ be the ramification index of $F_k^*$ (the largest denominator of the Puiseux expansions).
+where $F_k^* \in K[[X]][Y]$ and $F_0^*$ is the unit corresponding to the branches outside the origin). Let $d_k$ be the degree in $Y$ of $F_k^*$ and let $e_k$ be the largest denominator of the Puiseux expansions of $F_k^*$.
 
 \item If we have a factorization
 \begin{equation} \label{FXfactors}
@@ -274,70 +274,60 @@ Hence: the analytic factors in $K[[Y]][X]$ of $F$ and $\overline{F}^{Y}$ are the
 
 The question is what precision do we get when we go from these factors to factors in $K[[X]][Y]$.
 
-\item Assume that the Puiseux expansions in $X$ of the $i$-th branch have denominator $\epsilon_i$ (the Puiseux expansions in $Y$ have denominator $e_i$). Then the polynomial $\eta(U)$ corresponding to that branch is correct up to degree $De_i$: the Puiseux expansion $\eta(Y^{1/{e_i}})$ is correct to degree $D$ and we take $U = Y^{1/{e_i}}$.
-\item Applying the inverse formula we get a polynomial $\gamma(T)$ which is correct up to the same degree $De_i$ in $T$. Now we replace $T = X^{1/\epsilon_i}$ to get the Puiseux expansions in $X$, $\gamma(X^{1/\epsilon_i})$. We get correct Puiseux expansions up to degree $De_i/\epsilon_i$.
-\item We need this number $De_i/\epsilon_i$ to be bigger than $\IntExpX$. So we get $D \ge \frac{\epsilon_i}{e_i}\IntExpX$ and then $K - \IntExpY - \tilde v_i \ge \frac{\epsilon_i}{e_i} \IntExpY$. So we get $K \ge \frac{\epsilon_i}{e_i}\IntExpX + \IntExpY + \tilde v_i$.
+\item Now the key argument is: for fixed $1 \le k \le s$, there is a reparametrization (or coordinates change) $(\alpha(X,Y), \beta(X,Y))$ that will transform $G_k^*$, into the corresponding analytic factor $F_k^*$ of $F \in K[[X]][Y]$, that is
+$$
+G_k^*(\alpha(X,Y), \beta(X,Y)) = F_k^*(X,Y).
+$$
 
-\item Consider $\frac{\epsilon}{e}$ the largest $\frac{\epsilon_i}{e_i}$ over all branches. So we need
-$$K > \frac{\epsilon}{e} \IntExpX + 2 \IntExpY,$$
-which is the bound we were looking for.
+Modulo $X^{N_0-\kappa}$, we obtain from (\ref{FXfactors}):
+$$
+G_k^*(\alpha(X,Y), \beta(X,Y)) \equiv F_i(X,Y) \mod X^{N_0-\kappa}.
+$$
 
-\end{enumerate}
+We have to show that if we apply this same reparametrization to $G_k$ we will obtain
+$$G_k(\alpha(X,Y), \beta(X,Y)) \equiv H_k \equiv F_k \mod X^{N_0 - \kappa}.$$
 
-%\item Now the key argument is: for fixed $1 \le k \le s$, there is a reparametrization (or coordinates change) $(\alpha(X,Y), \beta(X,Y))$ that will transform $G_k^*$, into the corresponding analytic factor $F_k^*$ of $F \in K[[X]][Y]$, that is
+\item By \cite[Theorem 5.17]{JP}, we can write
+$$
+G_k(x,y) = \prod_{i=1}^n (x - \eta(\zeta^i y^{1/n})) = \prod_{i=1}^n (x - \eta(\zeta^i u)),
+$$
+where $\zeta$ is a primitive $n$–th root of unity and $y = u^n$. The corresponding parametrization of the singularity is
+$$
+(\eta(u), u^n)
+$$
+and we want to compute the parametrization $(t^m, \gamma(t))$.
+
+That is, we want to invert th function $x = \eta(u)$ to obtain $y = \gamma(t)$.
+
+So let
+$$\eta(u) = (a_0 u^{m_0} + a_1 u^{m_0+1} + a_2 u^{m_0+2} + \dots,$$
+$a_0 \neq 0$ (here $n = e_k$ and $m_0 = d_k$).
+
+To invert this transformation we note
+\begin{align*}
+\eta(u) &= u^{m_0} (a_0 + a_1 u + a_1 u^2 + \dots) \\
+        &= \left(u \sqrt[m_0]{a_0 + a_1 u + a_2 u^2 + \dots}\right)^{m_0}
+\end{align*}
+
+Let
+$$
+b_0 + b_1 u + b_2 u^2 + \dots = \sqrt[m_0]{a_0 + a_1 u + a_2 u^2 + \dots}
+$$
+be an $m_0$-th root of $a_0 + a_1 u + a_2 u^2 + \dots$. In computations, if $a_0 + a_1 u + a_1 u^2 + \dots$ is developed up to precision $c$, then also $b_0 + b_1 U + b_2 U^2 + \dots$ can be computed with precision $c$.
+
+Set $q(u) = u (b_0  + b_1 u + b_2 u^2 + \dots) = b_0 u + b_1 u^2 + b_2 u^3 + \dots$ (hence $\eta(u) = q(u)^{m_0}$). Again, $q(u)$ can be computed with precision $c$.
+
+Finally let $p(t) = c_1 t + c_2 t^2 + \dots$ be the composite inverse of $q(u)$ (which can also be computed with precision $c$), that is $q(p(t)) = t$ and hence $u = p(t)$.
+
+We obtain the new parametrization
+$$(t^{m_0}, p(t)^n).$$
+
+As we have seen, all these transformations can be done without precision loss, hence if the $x$-Puiseux expansions of $G^*_i(x,y)$ are known with precision $c/n$, then the $y$-Puiseux expansions of $F^*_i(x,y)$ are known with precision $c/m$.
+%
+%Inverting the series, we obtain
 %$$
-%G_k^*(\alpha(X,Y), \beta(X,Y)) = F_k^*(X,Y).
+%T =  (x(T), y(T)) = (T^{m_0} (a_0 + a_1 T^{m_1 - m_0} + \dots), T^n)
 %$$
-%
-%Modulo $X^{N_0-\kappa}$, we obtain from (\ref{FXfactors}):
-%$$
-%G_k^*(\alpha(X,Y), \beta(X,Y)) \equiv F_i(X,Y) \mod X^{N_0-\kappa}.
-%$$
-%
-%We have to show that if we apply this same reparametrization to $G_k$ we will obtain
-%$$G_k(\alpha(X,Y), \beta(X,Y)) \equiv H_k \equiv F_k \mod X^{N_0 - \kappa}.$$
-%
-%\item By \cite[Theorem 5.17]{JP}, we can write
-%$$
-%G_k(x,y) = \prod_{i=1}^n (x - \eta(\zeta^i y^{1/n})) = \prod_{i=1}^n (x - \eta(\zeta^i u)),
-%$$
-%where $\zeta$ is a primitive $n$–th root of unity and $y = u^n$. The corresponding parametrization of the singularity is
-%$$
-%(\eta(u), u^n)
-%$$
-%and we want to compute the parametrization $(t^m, \gamma(t))$.
-%
-%That is, we want to invert th function $x = \eta(u)$ to obtain $y = \gamma(t)$.
-%
-%So let
-%$$\eta(u) = (a_0 u^{m_0} + a_1 u^{m_0+1} + a_2 u^{m_0+2} + \dots,$$
-%$a_0 \neq 0$ (here $n = e_k$ and $m_0 = d_k$).
-%
-%To invert this transformation we note
-%\begin{align*}
-%\eta(u) &= u^{m_0} (a_0 + a_1 u + a_1 u^2 + \dots) \\
-%        &= \left(u \sqrt[m_0]{a_0 + a_1 u + a_2 u^2 + \dots}\right)^{m_0}
-%\end{align*}
-%
-%Let
-%$$
-%b_0 + b_1 u + b_2 u^2 + \dots = \sqrt[m_0]{a_0 + a_1 u + a_2 u^2 + \dots}
-%$$
-%be an $m_0$-th root of $a_0 + a_1 u + a_2 u^2 + \dots$. In computations, if $a_0 + a_1 u + a_1 u^2 + \dots$ is developed up to precision $c$, then also $b_0 + b_1 U + b_2 U^2 + \dots$ can be computed with precision $c$.
-%
-%Set $q(u) = u (b_0  + b_1 u + b_2 u^2 + \dots) = b_0 u + b_1 u^2 + b_2 u^3 + \dots$ (hence $\eta(u) = q(u)^{m_0}$). Again, $q(u)$ can be computed with precision $c$.
-%
-%Finally let $p(t) = c_1 t + c_2 t^2 + \dots$ be the composite inverse of $q(u)$ (which can also be computed with precision $c$), that is $q(p(t)) = t$ and hence $u = p(t)$.
-%
-%We obtain the new parametrization
-%$$(t^{m_0}, p(t)^n).$$
-%
-%As we have seen, all these transformations can be done without precision loss, hence if the $x$-Puiseux expansions of $G^*_i(x,y)$ are known with precision $c/n$, then the $y$-Puiseux expansions of $F^*_i(x,y)$ are known with precision $c/m$.
-%%
-%%Inverting the series, we obtain
-%%$$
-%%T =  (x(T), y(T)) = (T^{m_0} (a_0 + a_1 T^{m_1 - m_0} + \dots), T^n)
-%%$$
 
 \end{enumerate}
 
