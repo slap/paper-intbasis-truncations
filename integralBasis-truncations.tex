@@ -173,6 +173,7 @@ $n \in \mathbb{N}$ (truncation order); $\pi$ the current truncated parametrisati
 There seems to be an error in the bounds here, which don't agree with the following theorem in that same paper:
 
 \begin{lemma}(\cite[Lemma 3.19]{poteaux2021})
+\label{lemma:pebound}
 Let $n_0 \in \mathbb{N}$. To compute the RPE $R_i$ with certified precision
 $n_0 > \frac{r_i}{e_i}$, it is necessary and sufficient to run \emph{Half-RNP}
 with truncation bound $n = n_0 + v_i$. In particular, to ensure the computation
@@ -217,16 +218,16 @@ For the computation of the integral basis we also need the singular part of the 
 
 However if we compute the Puiseux expansions from $\bar F$, the same proposition \ref{prop:factors} says that we will obtain the Puiseux expansions with precision at least $\IntExpX$, and hence the singular part will be correctly computed.
 
-\item I am not sure about this last step. In any case, we can compute the singular part of the Puiseux expansions by truncating at $\alpha + 2 \times \IntExpX$ (a little larger than $3 \times \IntExpX$). The argument is as follows:
+\item I am not sure about this last step. In any case, we can compute the singular part of the Puiseux expansions by truncating at $3 \times \IntExpX$. The argument is as follows:
 
     \begin{enumerate}
-    \item We apply Algorithm \ref{algo:halfRNP} Half-RNP to one factor $F_i$.
+    \item We apply Lemma \ref{lemma:pebound} to one factor $F_i$.
     \item In this case $v_i = v_X({(F_i)}_Y)$ and this is smaller than $\IntExpX$ (the integrality exponent of one branch is smaller than that of the full polynomial).
-    \item $r_i$ may not be smaller than the integrality exponent but we have $r_i \le \alpha$.
-    \item So by Algorithm  \ref{algo:halfRNP}, we need $n \ge v_i + r_i$, and $v_i + r_i \le \alpha + \IntExpX$. That is, we need the factor $F_i$ developed to degree $\alpha + \IntExpX$ and by Proposition \ref{prop:factors} we can get this by computing a factorization of $F$ modulo $\alpha + 2 \IntExpX$.
+    \item By \cite[Lemma 3.21]{poteaux2021}, $r_i / e_i \le v_i$.
+    \item By Lemma \ref{lemma:pebound}, we need $n \ge v_i + r_i/e_i$, and $v_i + r_i/e_i \le 2 \IntExpX$. That is, we need the factor $F_i$ developed to degree $2 \IntExpX$ and by Proposition \ref{prop:factors} we can get this precision by computing a factorization of $F$ modulo $3 \IntExpX$.
     \end{enumerate}
 
-\item Putting everything together, we can truncate the powers of $X$ of $F$ at order $\alpha + 2 \IntExpX$ and we will be able to compute the correct factors up to the integrality exponent and the singular part of the Puiseux expansions and hence we will compute the correct integral basis.
+\item Putting everything together, we can truncate the powers of $X$ of $F$ at order $3 \IntExpX$ and we will be able to compute the correct factors up to the integrality exponent and the singular part of the Puiseux expansions and hence we will compute the correct integral basis.
 
 \end{enumerate}
 
@@ -236,7 +237,7 @@ When we are interested in the local integral basis at the origin we can also tru
 
 One possible approach is the following:
 \begin{enumerate}
-\item Applying again \cite[Proposition 23]{poteaux2021}  in terms of $Y$ with high enough precision, we obtain that the factors at the origin are uniquely determined and they are the same factors as the factors obtained when we develop the factorization in terms of $X$, so we are able to recover the correct information.
+\item Applying again \cite[Proposition 23]{poteaux2021} looking at the polynomial in  $K[[Y]][X]$ with high enough precision, we obtain that the factors at the origin are uniquely determined and they are the same factors as the factors obtained when we develop the factorization in terms of $X$ (but with a different parametrization), so we are able to recover the correct information.
 \item The factor $g_0$ however corresponds to the branches of $f$ at $Y = 0$ and the factor $f_0$ corresponds to the branches of $f$ at $X = 0$, so we cannot recover the Puiseux expansions of $f_0$ from the Puiseux expansions of $g_0$.
 \item Hence when we apply a truncation in $Y$ we can expect to compute correctly the local integral basis but not the local contribution.
 \end{enumerate}
@@ -272,14 +273,26 @@ where $G_k^*$ are the analytic factors of $F$ in $K[[Y]][X]$.
 By the same argument $G_k$ agrees with the analytic factors of $\overline{F}^{Y} \mod Y^{N_0 - \kappa}$.
 Hence: the analytic factors in $K[[Y]][X]$ of $F$ and $\overline{F}^{Y}$ are the same modulo $Y^{N_0 - \kappa}$.
 
+\end{enumerate}
+
 The question is what precision do we get when we go from these factors to factors in $K[[X]][Y]$.
+We need to compute the factors correctly up to degree $\IntExpX$ in $X$, and we study now up to which degree we can truncate in Y.
 
-\item Assume that the Puiseux expansions in $X$ of the $i$-th branch have denominator $\epsilon_i$ (the Puiseux expansions in $Y$ have denominator $e_i$). Then the polynomial $\eta(U)$ corresponding to that branch is correct up to degree $De_i$: the Puiseux expansion $\eta(Y^{1/{e_i}})$ is correct to degree $D$ and we take $U = Y^{1/{e_i}}$.
-\item Applying the inverse formula we get a polynomial $\gamma(T)$ which is correct up to the same degree $De_i$ in $T$. Now we replace $T = X^{1/\epsilon_i}$ to get the Puiseux expansions in $X$, $\gamma(X^{1/\epsilon_i})$. We get correct Puiseux expansions up to degree $De_i/\epsilon_i$.
-\item We need this number $De_i/\epsilon_i$ to be bigger than $\IntExpX$. So we get $D \ge \frac{\epsilon_i}{e_i}\IntExpX$ and then $K - \IntExpY - \tilde v_i \ge \frac{\epsilon_i}{e_i} \IntExpY$. So we get $K \ge \frac{\epsilon_i}{e_i}\IntExpX + \IntExpY + \tilde v_i$.
+\begin{enumerate}
+\item Let $\bar F$ be the truncation of $F$ at some degree $K$ in $Y$. We want to know a good $K$.
+\item Assume $K \ge 3 \IntExpY$. 
+\item By Proposition \ref{prop:factors}, since $K \ge 2 \IntExpY$, we can compute the factors in $K[[X]][Y]$ correct up to degree $n = K - \IntExpY$.
+    
+\item Consider the $k$-th branch. We have
+$$n - \tilde v_k \ge n - \IntExpY = K - 2 \IntExpY \ge \IntExpY \ge \tilde v_k \ge \frac{r_k}{\epsilon_k}.$$
 
-\item Consider $\frac{\epsilon}{e}$ the largest $\frac{\epsilon_i}{e_i}$ over all branches. So we need
-$$K > \frac{\epsilon}{e} \IntExpX + 2 \IntExpY,$$
+Then by Lemma \ref{lemma:pebound}, since the factor is computed with truncation bound $n = K - \IntExpY$, we obtain the Puiseux expansions with precision $n_0 = n - \tilde v_k \ge \IntExpY$. Let $D = n - \tilde v_k$.
+\item Assume that the Puiseux expansions in $Y$ of the $k$-th branch of $F$ have denominator $\epsilon_k$ ((the Puiseux expansions in $X$ have denominator $e_k$). Then the polynomial $\eta(U)$ corresponding to that branch is correct up to degree $D\epsilon_k$: the Puiseux expansion $\eta(Y^{1/{\epsilon_k}})$ is correct to degree $D$ and we take $U = Y^{1/{\epsilon_k}}$.
+\item Applying the inverse formula we get a polynomial $\gamma(T)$ which is correct up to the same degree $D\epsilon_k$ in $T$. Now we replace $T = X^{1/e_k}$ to get the Puiseux expansions in $X$, $\gamma(X^{1/e_k})$. We get correct Puiseux expansions up to degree $D\epsilon_k/e_k$.
+\item We need this number $D \epsilon_k / e_k$ to be bigger than $\IntExpX$. So we get $D \ge \frac{e_k}{\epsilon_k}\IntExpX$ and then $K - \IntExpY - \tilde v_k \ge \frac{e_k}{\epsilon_k} \IntExpY$. So we get $K \ge \frac{e_k}{\epsilon_k}\IntExpX + \IntExpY + \tilde v_k$.
+
+\item Consider $\frac{e}{\epsilon}$ the largest $\frac{e_k}{\epsilon_k}$ over all branches. So we need
+$$K > \frac{e}{\epsilon} \IntExpX + 2 \IntExpY,$$
 which is the bound we were looking for.
 
 \end{enumerate}
@@ -339,7 +352,7 @@ which is the bound we were looking for.
 %%T =  (x(T), y(T)) = (T^{m_0} (a_0 + a_1 T^{m_1 - m_0} + \dots), T^n)
 %%$$
 
-\end{enumerate}
+%\end{enumerate}
 
 \begin{remark}
 The argument for truncations in $Y$ is the following:
