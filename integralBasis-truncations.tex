@@ -279,28 +279,30 @@ The question is what precision do we get when we go from these factors to factor
 We need to compute the factors correctly up to degree $\IntExpX$ in $X$, and we study now up to which degree we can truncate in Y.
 
 \begin{enumerate}
-\item Let $\overline{F}^{Y}$ be the truncation of $F$ at some degree $K$ in $Y$. We want to know a good $K$.
+\item Let $\overline{F}^{Y}$ be the truncation of $F$ at some degree $N_0$ in $Y$. We want to know a good $K$.
 \item Assume $K \ge 3 \IntExpY$.
 \item We can factorize $\overline{F}^{Y}$ in $K[[Y]][X]$:
 $$\overline{F}^{Y} \equiv G_0 G_1 \dots G_s \mod Y^{N_0}.$$
 
-\item By Proposition \ref{prop:factors}, since $K \ge 2 \IntExpY$, the factors are correct up to degree $n = K - \IntExpY$.
+\item By Proposition \ref{prop:factors}, since $K \ge 2 \IntExpY$, the factors are correct up to degree $n = N_0 - \IntExpY$. That is,
+$$G_k \equiv G_k^* \mod Y^{N_0 - \IntExpY}$$
+where $G_k^*$, $0 \le k \le s$, are the analytic factors of $F$ in $K[[Y]][X]$.
 
-\item Consider the $k$-th branch. Let $\epsilon_k$ be the ramification index of $G_k$ (the largest denominator in the expansions), $\tilde v_k = v_Y((G_K(\eta(Y^{1/\epsilon_k})))$ and $r_k$ the regularity index (so that the singular part goes up to degree $r_k/\epsilon_k$).
-$$G_k = \prod_{i=1}^{\epsilon_k} (X - \eta(\xi^i Y^{1/\epsilon_k})).$$
+\item Consider the $k$-th branch. Let $\epsilon_k$ be the ramification index of $G^*_k$ (the largest denominator in the expansions), $\tilde v_k = v_Y((G^*_k(\eta(Y^{1/\epsilon_k})))$ and $r_k$ the regularity index (so that the singular part goes up to degree $r_k/\epsilon_k$). Hence
+$$G^*_k = \prod_{i=1}^{\epsilon_k} (X - \eta(\xi^i Y^{1/\epsilon_k})).$$
 
 We have
-$$n - \tilde v_k \ge n - \IntExpY = K - 2 \IntExpY \ge \IntExpY \ge \tilde v_k \ge \frac{r_k}{\epsilon_k}.$$
+$$n - \tilde v_k \ge n - \IntExpY = N_0 - 2 \IntExpY \ge \IntExpY \ge \tilde v_k \ge \frac{r_k}{\epsilon_k}.$$
 
-Then by Lemma \ref{lemma:pebound}, since the factor is computed with truncation bound $n = K - \IntExpY$, we obtain the Puiseux expansions with precision $n_0 = n - \tilde v_k \ge \IntExpY$. Let $D = n - \tilde v_k$.
+Then by Lemma \ref{lemma:pebound}, since the polynomial $G^*_k$ is computed with precision bound $n = N_0 - \IntExpY$, we obtain the Puiseux expansions with precision $n_0 = n - \tilde v_k \ge \IntExpY$. Let $D = n - \tilde v_k$.
 \item The polynomial $\eta(U)$ corresponding to the $k$-th branch is correct up to degree $D\epsilon_k$: the Puiseux expansion $\eta(Y^{1/{\epsilon_k}})$ is correct to degree $D$ and we take $U = Y^{1/{\epsilon_k}}$.
 \item Applying the inverse formula to the Puiseux expansions we get a polynomial $\gamma(T)$ which is correct up to the same degree $D\epsilon_k$ in $T$. Now we replace $T = X^{1/e_k}$ to get the Puiseux expansions in $X$, $\gamma(X^{1/e_k})$. We get correct Puiseux expansions up to degree $D\epsilon_k/e_k$.
 \item We need this number $D \epsilon_k / e_k$ to be bigger than $\IntExpX$. So we get $D \ge \frac{e_k}{\epsilon_k}\IntExpX$ and then 
-$$K - \IntExpY - \tilde v_k \ge \frac{e_k}{\epsilon_k} \IntExpY.$$
+$$N_0 - \IntExpY - \tilde v_k \ge \frac{e_k}{\epsilon_k} \IntExpY.$$
 So we get 
-$$K \ge \frac{e_k}{\epsilon_k}\IntExpX + \IntExpY + \tilde v_k.$$
+$$N_0 \ge \frac{e_k}{\epsilon_k}\IntExpX + \IntExpY + \tilde v_k.$$
 \item Consider $\frac{e}{\epsilon}$ the largest $\frac{e_k}{\epsilon_k}$ over all branches. So we need
-$$K > \frac{e}{\epsilon} \IntExpX + 2 \IntExpY,$$
+$$N_0 > \frac{e}{\epsilon} \IntExpX + 2 \IntExpY,$$
 which is the bound we were looking for.
 
 \end{enumerate}
