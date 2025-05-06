@@ -297,6 +297,14 @@ $$n - \tilde v_k \ge n - \IntExpY = N_0 - 2 \IntExpY \ge \IntExpY \ge \tilde v_k
 Then by Lemma \ref{lemma:pebound}, since the polynomial $G^*_k$ is computed with precision bound $n = N_0 - \IntExpY$, we obtain the Puiseux expansions with precision $n_0 = n - \tilde v_k \ge \IntExpY$. Let $D = n - \tilde v_k$.
 \item The polynomial $\eta(U)$ corresponding to the $k$-th branch is correct up to degree $D\epsilon_k$: the Puiseux expansion $\eta(Y^{1/{\epsilon_k}})$ is correct to degree $D$ and we take $U = Y^{1/{\epsilon_k}}$.
 \item Applying the inverse formula to the Puiseux expansions we get a polynomial $\gamma(T)$ which is correct up to the same degree $D\epsilon_k$ in $T$. Now we replace $T = X^{1/e_k}$ to get the Puiseux expansions in $X$, $\gamma(X^{1/e_k})$. We get correct Puiseux expansions up to degree $D\epsilon_k/e_k$.
+
+
+\item As a conclusion, if we have a factorization
+\begin{equation} \label{FXfactors}
+F \equiv  F_0 F_1 \dots F_s \mod X^{N_0},
+\end{equation}
+then by Proposition \ref{prop:factors}, $F_k \equiv F_k^* \mod X^{N_0 - \kappa}$, where $F_k^* \in K[[X]][Y]$ are the analytic factors at the origin and $F_0^*$ is the unit corresponding to the branches outside the origin.
+    
 \item We need this number $D \epsilon_k / e_k$ to be bigger than $\IntExpX$. So we get $D \ge \frac{e_k}{\epsilon_k}\IntExpX$ and then 
 $$N_0 - \IntExpY - \tilde v_k \ge \frac{e_k}{\epsilon_k} \IntExpY.$$
 So we get 
