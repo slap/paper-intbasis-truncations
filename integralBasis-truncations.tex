@@ -242,7 +242,9 @@ One possible approach is the following:
 \item Hence when we apply a truncation in $Y$ we can expect to compute correctly the local integral basis but not the local contribution.
 \end{enumerate}
 
-We now formalize these ideas and calculate the required precision. For this, we need to be able to go from Puiseux expansions in $X$ to Puiseux expansions in $Y$ ($N_0$ and $\kappa$ are the numbers to be determined, and they are possibly different for $X$-truncations and $Y$-truncations).
+We now formalize these ideas and calculate the required precision. For this, we need to be able to go from Puiseux expansions in $X$ to Puiseux expansions in $Y$.  This can be done using inversion formulas, see for example \cite{Barroso}.
+
+% ($N_0$ and $\kappa$ are the numbers to be determined, and they are possibly different for $X$-truncations and $Y$-truncations).
 
 \begin{enumerate}
 \item We start with a polynomial $F \in K[X,Y]$ with analytic factorization in $K[[X]][Y]$:
@@ -257,21 +259,21 @@ F \equiv  F_0 F_1 \dots F_s \mod X^{N_0},
 then by Proposition \ref{prop:factors}, $F_k \equiv F_k^* \mod X^{N_0 - \kappa}$.
 
 
-\item Now we truncate in $Y$. Let $\overline{F}^{Y}$ be the truncation of $F$ modulo $Y^{N_0}$. We can factorize this polynomial in $K[[X]][Y]$ as
+\item Now we truncate in $Y$. Let $\overline{F}^{Y}$ be the truncation of $F$ modulo $Y^{M_0}$, for some value $M_0$ to determine. We can factorize this polynomial in $K[[X]][Y]$ as
 $$
 \overline{F}^{Y} \equiv  {H}_0 {H}_1 \dots {H}_s \mod X^{N_0},
 $$
 and we want to know if ${H}_k \equiv F^*_k \mod X^{N_0 - \kappa}$ for $k > 0$ (we cannot expect $H_0 \equiv F_0^* \mod X^{N_0 - \kappa}$).
 
 \item We can also factorize $\overline{F}^{Y}$ in $K[[Y]][X]$:
-$$\overline{F}^{Y} \equiv G_0 G_1 \dots G_s \mod Y^{N_0}.$$
+$$\overline{F}^{Y} \equiv G_0 G_1 \dots G_s \mod Y^{M_0}.$$
 
 \item Applying Proposition \ref{prop:factors} to ${F}$ in $K[[Y]][X]$  we obtain that
-$$G_k \equiv G_k^* \mod Y^{N_0 - \kappa}$$
+$$G_k \equiv G_k^* \mod Y^{M_0 - \kappa_Y}$$
 where $G_k^*$ are the analytic factors of $F$ in $K[[Y]][X]$.
 
-By the same argument $G_k$ agrees with the analytic factors of $\overline{F}^{Y} \mod Y^{N_0 - \kappa}$.
-Hence: the analytic factors in $K[[Y]][X]$ of $F$ and $\overline{F}^{Y}$ are the same modulo $Y^{N_0 - \kappa}$.
+By the same argument $G_k$ agrees with the analytic factors of $\overline{F}^{Y} \mod Y^{M_0 - \kappa_Y}$.
+Hence: the analytic factors in $K[[Y]][X]$ of $F$ and $\overline{F}^{Y}$ are the same modulo $Y^{M_0 - \kappa_Y}$.
 
 \end{enumerate}
 
@@ -304,10 +306,10 @@ Then by Lemma \ref{lemma:pebound}, since the polynomial $G^*_k$ is computed with
 F \equiv  F_0 F_1 \dots F_s \mod X^{N_0},
 \end{equation}
 then by Proposition \ref{prop:factors}, $F_k \equiv F_k^* \mod X^{N_0 - \kappa}$, where $F_k^* \in K[[X]][Y]$ are the analytic factors at the origin and $F_0^*$ is the unit corresponding to the branches outside the origin.
-    
-\item We need this number $D \epsilon_k / e_k$ to be bigger than $\IntExpX$. So we get $D \ge \frac{e_k}{\epsilon_k}\IntExpX$ and then 
+
+\item We need this number $D \epsilon_k / e_k$ to be bigger than $\IntExpX$. So we get $D \ge \frac{e_k}{\epsilon_k}\IntExpX$ and then
 $$N_0 - \IntExpY - \tilde v_k \ge \frac{e_k}{\epsilon_k} \IntExpY.$$
-So we get 
+So we get
 $$N_0 \ge \frac{e_k}{\epsilon_k}\IntExpX + \IntExpY + \tilde v_k.$$
 \item Consider $\frac{e}{\epsilon}$ the largest $\frac{e_k}{\epsilon_k}$ over all branches. So we need
 $$N_0 > \frac{e}{\epsilon} \IntExpX + 2 \IntExpY,$$
