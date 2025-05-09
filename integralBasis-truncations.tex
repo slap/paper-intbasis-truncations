@@ -228,8 +228,14 @@ However if we compute the Puiseux expansions from $\bar F$, the same proposition
     \end{enumerate}
 
 \item Putting everything together, we can truncate the powers of $X$ of $F$ at order $3 \IntExpX$ and we will be able to compute the correct factors up to the integrality exponent and the singular part of the Puiseux expansions and hence we will compute the correct integral basis.
-
 \end{enumerate}
+
+We obtain the following result.
+
+\begin{proposition}
+Let $F \in K[X,Y]$ be monic in $Y$, let $\kappa$ be the maximum of the lifting orders as defined in Proposition \ref{prop:factors}.
+Let $N_0 \in \N$, $N_0 > 3\IntExpX$, where $\IntExpX$ is the integrality exponent of $F$ in $X$ (the minimum exponent of a power of $X$ in the conductor of $F$).  Let $\overline F \in K[X,Y]$ be such that $F \equiv \overline{F} \mod X^{N_0}$. Then the generators of the local contribution at the origin to the integral basis of $\overline F$ are also generators of the local contribution at the origin to the integral basis of $F$. That is, for computing the local contribution at the origin to the integral basis of $F$ we can truncate the powers of $X$ of $F$ above degree $3 \IntExpX$.
+\end{proposition}
 
 \section{Local integral basis at the origin}
 
@@ -316,6 +322,12 @@ $$N_0 > \frac{e}{\epsilon} \IntExpX + 2 \IntExpY,$$
 which is the bound we were looking for.
 
 \end{enumerate}
+
+We obtain the following result
+
+\begin{proposition}
+Let $F \in K[X,Y]$ be monic in $Y$. Assume $F = F_0^* F_1^* \dots F_s^*$ is the analytic factorization of $F$, where $F_k^* \in K[[X]][Y]$ and $F_0^*$ is the unit corresponding to the branches outside the origin. Let $d_k$ be the degree in $Y$ of $F_k^*$ and let $e_k$ be the ramification index of $F_k^*$ (the largest denominator of the Puiseux expansions). Let $F = G_0^* G_1^* \dots G_s^*$ be the analytic factorization of $F$ in $K[[X]][Y]$ and let $\epsilon_k$ be the ramification index of $G_k^*$. Let $M_0 \in \N$, $M_0 > \frac{e_k}{\epsilon_k} \IntExpX + 2 \IntExpY$ for all $1 \le k \le s$ and $M_0 > 3 \IntExpY$. Let $\overline F \in K[X,Y]$ be such that $F \equiv \overline{F} \mod Y^{M_0}$. Then the generators of the local integral basis of $\overline F$ at the origin are also generators of the local integral basis of $F$ at the origin. That is, for computing the local the integral basis of $F$ at the origina we can truncate the powers of $X$ of $F$ at degree $M_0$.
+\end{proposition}
 
 %\item Now the key argument is: for fixed $1 \le k \le s$, there is a reparametrization (or coordinates change) $(\alpha(X,Y), \beta(X,Y))$ that will transform $G_k^*$, into the corresponding analytic factor $F_k^*$ of $F \in K[[X]][Y]$, that is
 %$$
