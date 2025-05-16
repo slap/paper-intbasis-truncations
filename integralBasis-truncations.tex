@@ -133,9 +133,9 @@ $$
 the maximum of the lifting orders being taken over all disjoint subsets $I, J \subset {0,\dots,s}$,
 with $F_I = \prod_{i\in I} F_i$. Then there exists uniquely determined analytic factors $F_0^*, F_1^*,\dots, F_k^*$ such that $F = F_0^* F_1^* \cdots F_k^*$, where
 $$
-F_i^* \equiv F_i \mod X^{N_0'-\kappa}.
+F_i^* \equiv F_i \mod X^{N_0-\kappa}.
 $$
-Moreover, starting from (\ref{factorization}), we can compute the $F_i^\star$ up to any precision $N \ge N_0 - \kappa$ in $\bigO(dN)$ operations over $K$.
+Moreover, starting from (\ref{factorization}), we can compute the $F_i^*$ up to any precision $N \ge N_0 - \kappa$ in $\bigO(dN)$ operations over $K$.
 \end{proposition}
 
 The authors provide the bound $\kappa \le \delta / 2$, where $\delta = \upsilon_X \left( \operatorname{Res}_Y(F, F_Y) \right) = 2 \IntExpX$, so $\kappa \le \IntExpX$.
@@ -233,9 +233,28 @@ However if we compute the Puiseux expansions from $\bar F$, the same proposition
 We obtain the following result.
 
 \begin{proposition}
+\label{prop:truncX}
 Let $F \in K[X,Y]$ be monic in $Y$, let $\kappa$ be the maximum of the lifting orders as defined in Proposition \ref{prop:factors}.
 Let $N_0 \in \N$, $N_0 > 3\IntExpX$, where $\IntExpX$ is the integrality exponent of $F$ in $X$ (the minimum exponent of a power of $X$ in the conductor of $F$).  Let $\overline F \in K[X,Y]$ be such that $F \equiv \overline{F} \mod X^{N_0}$. Then the generators of the local contribution at the origin to the integral basis of $\overline F$ are also generators of the local contribution at the origin to the integral basis of $F$. That is, for computing the local contribution at the origin to the integral basis of $F$ we can truncate the powers of $X$ of $F$ above degree $3 \IntExpX$.
 \end{proposition}
+
+\begin{proof}
+Let $F = F_0^* F_1^* \dots F_k^*$ be the analytic factorization of $F$ into branches.
+To compute the local contribution at the original for the integral basis of $F$, we need to compute these factors developed up to the integrality exponent, and the singular part of the Puiseux expansions of $F$ at the origin. 
+
+Let $\kappa$ be the maximum of the lifting orders as defined in Proposition \ref{prop:factors}. 
+We know that $\kappa \le \delta / 2$, where $\delta = \upsilon_X \left( \operatorname{Res}_Y(F, F_Y) \right) = 2 \IntExpX$, so $\kappa \le \IntExpX$.
+
+Since $N_0 > 3 \IntExpX$, in particular $N_0 > 2 \kappa$ and $N_0 - \kappa > 2\IntExpX$ and hence by Proposition \ref{prop:factors}, if we compute a factorization
+$$
+F \equiv  F_0 F_1 \dots F_s \mod X^{N_0},
+$$
+then $F_i^* \equiv F_i \mod X^{2 \IntExpX}$.
+
+Finally, we follow Proposition \ref{lemma:pebound} to compute the singular part of the Puiseux expansions of $F_i$, $1 \le i \le k$, we need the factor $F_i$ computed with precision at least $\frac{r_i}{e_i} + v_i$. We have shown that $\frac{r_i}{e_i} + v_i \le 2\IntExpX$, so the result follows.
+\end{proof}
+
+
 
 \section{Local integral basis at the origin}
 
@@ -326,8 +345,18 @@ which is the bound we were looking for.
 We obtain the following result
 
 \begin{proposition}
-Let $F \in K[X,Y]$ be monic in $Y$. Assume $F = F_0^* F_1^* \dots F_s^*$ is the analytic factorization of $F$, where $F_k^* \in K[[X]][Y]$ and $F_0^*$ is the unit corresponding to the branches outside the origin. Let $d_k$ be the degree in $Y$ of $F_k^*$ and let $e_k$ be the ramification index of $F_k^*$ (the largest denominator of the Puiseux expansions). Let $F = G_0^* G_1^* \dots G_s^*$ be the analytic factorization of $F$ in $K[[X]][Y]$ and let $\epsilon_k$ be the ramification index of $G_k^*$. Let $M_0 \in \N$, $M_0 > \frac{e_k}{\epsilon_k} \IntExpX + 2 \IntExpY$ for all $1 \le k \le s$ and $M_0 > 3 \IntExpY$. Let $\overline F \in K[X,Y]$ be such that $F \equiv \overline{F} \mod Y^{M_0}$. Then the generators of the local integral basis of $\overline F$ at the origin are also generators of the local integral basis of $F$ at the origin. That is, for computing the local the integral basis of $F$ at the origina we can truncate the powers of $X$ of $F$ at degree $M_0$.
+\label{prop:truncY}
+Let $F \in K[X,Y]$ be monic in $Y$. Assume $F = F_0^* F_1^* \dots F_s^*$ is the analytic factorization of $F$, where $F_k^* \in K[[X]][Y]$ and $F_0^*$ is the unit corresponding to the branches outside the origin. Let $d_k$ be the degree in $Y$ of $F_k^*$ and let $e_k$ be the ramification index of $F_k^*$ (the largest denominator of the Puiseux expansions). Let $F = G_0^* G_1^* \dots G_s^*$ be the analytic factorization of $F$ in $K[[Y]][X]$ and let $\epsilon_k$ be the ramification index of $G_k^*$. Let $M_0 \in \N$, $M_0 > \frac{e_k}{\epsilon_k} \IntExpX + 2 \IntExpY$ for all $1 \le k \le s$ and $M_0 > 3 \IntExpY$. Let $\overline F \in K[X,Y]$ be such that $F \equiv \overline{F} \mod Y^{M_0}$. Then the generators of the local integral basis of $\overline F$ at the origin are also generators of the local integral basis of $F$ at the origin. That is, for computing the local the integral basis of $F$ at the origin we can truncate the powers of $X$ of $F$ at degree $M_0$.
 \end{proposition}
+
+\begin{proof} Let $F = G_0 G_1 \dots G_s$ be the factorization of $F$ modulo $Y^{M_0}$. 
+By Proposition \ref{prop:factors}, we know that $G_i \equiv G_i^\star \mod Y^{M_0 - \IntExpY}$. 
+Following \ref{lemma:pebound} (as in the proof of Proposition \ref{prop:truncX}), if we compute the Puiseux expansions of $G_i$, they will agree with the Puiseux expansions of $G^*_i$ up to degree at least $e/\epsilon \IntExpX$, where $e/\epsilon$ is the largest possible $e_k / \epsilon_k$, $1 \le k \le s$. 
+
+If we apply the inversion formula to these expansions we will get the Puiseux expansions of $F_k$ in terms of $X$ correct up to degree $\epsilon_k/ e_k e/E \IntExpX \ge \IntExpX$. Hence we can also compute the correct factors $F_0^*, F_1^*, \dots, F_s^*$ up to degree $\IntExpX$, as wanted.
+\end{proof}
+
+
 
 %\item Now the key argument is: for fixed $1 \le k \le s$, there is a reparametrization (or coordinates change) $(\alpha(X,Y), \beta(X,Y))$ that will transform $G_k^*$, into the corresponding analytic factor $F_k^*$ of $F \in K[[X]][Y]$, that is
 %$$
