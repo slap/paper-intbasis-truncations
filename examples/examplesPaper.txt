@@ -1,0 +1,29 @@
+
+cd /mnt/c/Users/Usuario/Documents/GitHub/papers/intbasis-truncations/LIB
+
+
+LIB"integralbasis.lib";
+ring R = 0, (x,y), dp;
+poly g = (y17 - x2) + x25;
+integralBasis(g,2);
+
+poly g1 = (y17 - x2) + x25;
+integralBasis(g,2);
+
+poly g1 = (y17 - x2);
+integralBasis(g,2);
+
+poly g1 = -(y17 - x2);
+integralBasis(g,1);
+
+LIB"integralbasis.lib";
+ring R = 0, (x,y), dp;
+poly g1 = x2-y17;
+integralBasis(g1,1);
+
+
+
+
+////////////////////////////////////
+
+// Fixes in Singular official libraries
