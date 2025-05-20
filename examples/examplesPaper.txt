@@ -1,4 +1,3 @@
-
 cd /mnt/c/Users/Usuario/Documents/GitHub/papers/intbasis-truncations/LIB
 
 
@@ -21,9 +20,9 @@ ring R = 0, (x,y), dp;
 poly g1 = x2-y17;
 integralBasis(g1,1);
 
-
-
-
-////////////////////////////////////
-
-// Fixes in Singular official libraries
+LIB"integralbasis.lib";
+LIB "polyclass.lib";
+LIB "arnoldgit.lib";
+ring R = 0, (x,y), ds;
+poly g = (y17 - x2) + x35;
+determinacyBound(g);  // 35

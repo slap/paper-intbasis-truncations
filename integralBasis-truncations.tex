@@ -40,14 +40,14 @@
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
 \theoremstyle{definition}
 \theoremstyle{plain}
-\newtheorem{defn}{Definition}[section]
-\newtheorem{theorem}[defn]{Theorem}
-\newtheorem{proposition}[defn]{Proposition}
-\newtheorem{lemma}[defn]{Lemma}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
 \theoremstyle{remark}
-\newtheorem{remark}[defn]{Remark}
-\newtheorem{example}[defn]{Example}
-\newtheorem{notation}[defn]{Notation}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{example}[definition]{Example}
+\newtheorem{notation}[definition]{Notation}
 \DeclareMathOperator{\LocalIntegralBasis}{LocalIntegralBasis}
 \DeclareMathOperator{\IntegralElement}{IntegralElement}
 \DeclareMathOperator{\IntegralBasisIterative}{\mathtt{IntegralBasisIterative}}
@@ -100,11 +100,21 @@ We provide good truncation bound that speed up the computation of integral basis
 
 Integral basis are very useful in real life.
 
-Given a polynomial $f \in K[x,y]$ monic in $Y$, we wish to compute the local contribution to the integral basis at the origin or the local integral basis at the origin.
+Given a polynomial $f \in K[X,Y]$ monic in $Y$, we wish to compute the local contribution to the integral basis at the origin or the local integral basis at the origin.
 
 
 \section{The determinacy}
 \label{section:directApproach}
+
+\begin{definition}
+The $k$-determinacy of $f \in K[X,Y]$ is the smallest integer $k$ such that any other function $g$ with the same $k$-jet as $f$ (that is, same Taylor expansion up to degree $k$) is right equivalent to $f$, meaning there is a change of coordinates (diffeormorphism) $\phi$ near the origin such that:
+$$
+f = g \circ \phi.
+$$
+
+If such a $k$ exists, $f$ is said to be \emph{finitely determined}, and $k$ is the \emph{order of determinacy}.
+\end{definition}
+
 
 In this section we show:
 \begin{enumerate}
@@ -240,9 +250,9 @@ Let $N_0 \in \N$, $N_0 > 3\IntExpX$, where $\IntExpX$ is the integrality exponen
 
 \begin{proof}
 Let $F = F_0^* F_1^* \dots F_k^*$ be the analytic factorization of $F$ into branches.
-To compute the local contribution at the original for the integral basis of $F$, we need to compute these factors developed up to the integrality exponent, and the singular part of the Puiseux expansions of $F$ at the origin. 
+To compute the local contribution at the original for the integral basis of $F$, we need to compute these factors developed up to the integrality exponent, and the singular part of the Puiseux expansions of $F$ at the origin.
 
-Let $\kappa$ be the maximum of the lifting orders as defined in Proposition \ref{prop:factors}. 
+Let $\kappa$ be the maximum of the lifting orders as defined in Proposition \ref{prop:factors}.
 We know that $\kappa \le \delta / 2$, where $\delta = \upsilon_X \left( \operatorname{Res}_Y(F, F_Y) \right) = 2 \IntExpX$, so $\kappa \le \IntExpX$.
 
 Since $N_0 > 3 \IntExpX$, in particular $N_0 > 2 \kappa$ and $N_0 - \kappa > 2\IntExpX$ and hence by Proposition \ref{prop:factors}, if we compute a factorization
@@ -349,9 +359,9 @@ We obtain the following result
 Let $F \in K[X,Y]$ be monic in $Y$. Assume $F = F_0^* F_1^* \dots F_s^*$ is the analytic factorization of $F$, where $F_k^* \in K[[X]][Y]$ and $F_0^*$ is the unit corresponding to the branches outside the origin. Let $d_k$ be the degree in $Y$ of $F_k^*$ and let $e_k$ be the ramification index of $F_k^*$ (the largest denominator of the Puiseux expansions). Let $F = G_0^* G_1^* \dots G_s^*$ be the analytic factorization of $F$ in $K[[Y]][X]$ and let $\epsilon_k$ be the ramification index of $G_k^*$. Let $M_0 \in \N$, $M_0 > \frac{e_k}{\epsilon_k} \IntExpX + 2 \IntExpY$ for all $1 \le k \le s$ and $M_0 > 3 \IntExpY$. Let $\overline F \in K[X,Y]$ be such that $F \equiv \overline{F} \mod Y^{M_0}$. Then the generators of the local integral basis of $\overline F$ at the origin are also generators of the local integral basis of $F$ at the origin. That is, for computing the local the integral basis of $F$ at the origin we can truncate the powers of $X$ of $F$ at degree $M_0$.
 \end{proposition}
 
-\begin{proof} Let $F = G_0 G_1 \dots G_s$ be the factorization of $F$ modulo $Y^{M_0}$. 
-By Proposition \ref{prop:factors}, we know that $G_i \equiv G_i^\star \mod Y^{M_0 - \IntExpY}$. 
-Following \ref{lemma:pebound} (as in the proof of Proposition \ref{prop:truncX}), if we compute the Puiseux expansions of $G_i$, they will agree with the Puiseux expansions of $G^*_i$ up to degree at least $e/\epsilon \IntExpX$, where $e/\epsilon$ is the largest possible $e_k / \epsilon_k$, $1 \le k \le s$. 
+\begin{proof} Let $F = G_0 G_1 \dots G_s$ be the factorization of $F$ modulo $Y^{M_0}$.
+By Proposition \ref{prop:factors}, we know that $G_i \equiv G_i^\star \mod Y^{M_0 - \IntExpY}$.
+Following \ref{lemma:pebound} (as in the proof of Proposition \ref{prop:truncX}), if we compute the Puiseux expansions of $G_i$, they will agree with the Puiseux expansions of $G^*_i$ up to degree at least $e/\epsilon \IntExpX$, where $e/\epsilon$ is the largest possible $e_k / \epsilon_k$, $1 \le k \le s$.
 
 If we apply the inversion formula to these expansions we will get the Puiseux expansions of $F_k$ in terms of $X$ correct up to degree $\epsilon_k/ e_k e/E \IntExpX \ge \IntExpX$. Hence we can also compute the correct factors $F_0^*, F_1^*, \dots, F_s^*$ up to degree $\IntExpX$, as wanted.
 \end{proof}
