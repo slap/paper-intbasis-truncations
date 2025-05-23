@@ -23,6 +23,8 @@
 %\usepackage[noend]{algorithmic}
 \usepackage[noend]{algpseudocode}
 
+%\usepackage{natbib}
+
 \usepackage{todonotes}
 \usepackage{amsfonts}
 \usepackage{graphicx}
@@ -42,6 +44,7 @@
 \theoremstyle{plain}
 \newtheorem{definition}{Definition}[section]
 \newtheorem{theorem}[definition]{Theorem}
+\newtheorem{corollary}[definition]{Corollary}
 \newtheorem{proposition}[definition]{Proposition}
 \newtheorem{lemma}[definition]{Lemma}
 \theoremstyle{remark}
@@ -106,24 +109,75 @@ Given a polynomial $f \in K[X,Y]$ monic in $Y$, we wish to compute the local con
 \section{The determinacy}
 \label{section:directApproach}
 
-\begin{definition}
-The $k$-determinacy of $f \in K[X,Y]$ is the smallest integer $k$ such that any other function $g$ with the same $k$-jet as $f$ (that is, same Taylor expansion up to degree $k$) is right equivalent to $f$, meaning there is a change of coordinates (diffeormorphism) $\phi$ near the origin such that:
-$$
-f = g \circ \phi.
-$$
+We begin with some standard defitinions (see \cite{Boubakri2012} for more details).
 
-If such a $k$ exists, $f$ is said to be \emph{finitely determined}, and $k$ is the \emph{order of determinacy}.
+\begin{definition}
+We say that two power series \( f, g \in K[[x,y]] \) are \emph{right equivalent} to each other if
+and only if there is an automorphism \( \varphi \in \mathrm{Aut}(K[[x,y]]) \) such that \( f = \varphi(g) \), and we
+denote this by \( f \sim_r g \). 
+
+We call \( f, g \in K[[x,y]] \) \emph{contact equivalent}
+to each other if and only if there is an automorphism \( \varphi \in \mathrm{Aut}(K[[x,y]]) \) and a unit
+\( u \in K[[x,y]]^* \) such that \( f = u \cdot \varphi(g) \), and we denote this by \( f \sim_c g \).
+The idea here is that \( \varphi \) and \( u \) still induce an isomorphism of the zero fibers of \( f \) and \( g \).
+\end{definition}
+
+\begin{definition}
+We say that \( f \) is \emph{right \( k \)-determined} if \( f \) is right equivalent to every \( g \in K[[x,y]] \) whose \( k \)-jet coincides with that of \( f \), where the \( k \)-jet of \( f \) is
+\[
+\operatorname{jet}_k(f) = f \mod \mathfrak{m}^{k+1} \in K[[x,y]] / \mathfrak{m}^{k+1}
+\]
+the residue class of \( f \) modulo the \( (k+1) \)-st power of the maximal ideal. I.e., \( f \) is right \( k \)-determined if it is right equivalent to every \( g \) which coincides with \( f \) up to order \( k \).
+
+Similarly, we call \( f \) \emph{contact \( k \)-determined} if \( f \) is contact equivalent to every \( g \) whose \( k \)-jet coincides with that of \( f \).
+
+In both situations, we say that \( f \) is \emph{finitely determined} if it is \( k \)-determined for some positive integer \( k \), and we call the least such \( k \) the \emph{determinacy} of \( f \).
 \end{definition}
 
 
-In this section we show:
+
+%\begin{definition}
+%The $k$-determinacy of $f \in K[X,Y]$ is the smallest integer $k$ such that any other function $g$ with the same $k$-jet as $f$ (that is, same Taylor expansion up to degree $k$) is right equivalent to $f$, meaning there is a change of coordinates (diffeormorphism) $\phi$ near the origin such that:
+%$$
+%f = g \circ \phi.
+%$$
+%
+%If such a $k$ exists, $f$ is said to be \emph{finitely determined}, and $k$ is the \emph{order of determinacy}.
+%\end{definition}
+
+Computing the determinacy of a dense polynomial can be expensive in characteristic 0. We want to use computations over positive chatacteistic to bound the determinacy. For this, we use known relations between the determinacy and the Milnor and Tjurina numbers.
+
+\begin{lemma}[page 64 in \cite{Boubakri2012}]
+For arbitrary fields of characteristic zero the right determinacy is at most $\mu(f) + 1$ and the contact determinacy is at
+most $\tau(f)+1$. For arbitrary characteristic, $2\mu(f)$ respectively $2\tau(f)$ are bounds for the degree of right respectively
+contact determinacy. 
+\end{lemma}
+
+Now we use the following result to bound the Milnor and Tjurina numbers in characteristic 0 by computations in characteristic $p$.
+
+\begin{lemma}[Corollary 3.1 in \cite{Greuel2021}]
+Let \( F \in \mathbb{Z}[x] \), \( p \in \mathbb{Z} \) a prime number, and denote by \( F_p \) the image
+of \( F \) in \( \mathbb{F}_p[[x]] \) and by \( F_0 \) the image of \( F \) in \( \mathbb{Q}[[x]] \).
+
+If \( \mu(F_p) \) is finite, then \( \mu(F_0) \leq \mu(F_p) \). In particular, if \( \mu(F_p) \) is finite for some \( p \), then \( \mu(F_0) \)
+    is finite. The same holds for the Tjurina number.
+\end{lemma}
+
+
+\begin{example}
+For $f = y^3 - x^2 \in \C[x,y]$, $\mu(f) = 2$ For $p = 2$ and $p = 3$, $\mu_(F_p) = \infty$ and $\mu(F_5) = 2$.
+\end{example}
+
+This allows for the following strategy to compute the integral bases of a plane curve:
 \begin{enumerate}
-\item An upper bound for the determinacy can be found fast reducing the polynomial modulo any prime number $p$.
-\item If we truncate the polynomial $f$ by standard degree at the determinacy, the characteristic exponents of $f$ will not change.
-\item The integrality exponent of $f$ can be computed from the characteristic exponents, so we can compute very fast the integrality exponent.
+\item Choose any small prime number, for example $p = 2$. Compute the Milnor number of $f$ in $\Z_p[[x,y]]$. If the Milnor number is finite, then $\mu(f) + 1$ is a bound for the determinacy. If it is infinite, repeat with another prime $p$.
+\item If we truncate the polynomial $f$ by standard degree at the determinacy, the characteristic exponents of $f$ will not change, because they are invariant under right equivalence (see for example \cite[Section 5.2]{de2013local}.
+\item The integrality exponent of $f$ can be computed from the characteristic exponents by a simple formula, so we can compute very fast the integrality exponent.
+\item We will derive bounds for truncating the original polynomial $f$ in $x$-degree and $y$-degree based on the $x$-integrality exponent and the $y$-integrality exponent, such that the resulting polynomial has exactly the same integral basis generators.
+\item We truncate the polynomial using those bounds and compute the integral basis for the truncated polynomial.
 \end{enumerate}
 
-Remark: the coefficients of the Puiseux expansions might change, but in all examples we tried, the coefficients don't change after truncation.
+Remark: the coefficients of the Puiseux expansions are not in general preserver by right equivalence. In our case we are truncating polynomials, which is a very special case of right equivalence. We have not been able to prove that truncating at the determinacy the singular part of the Puiseux expansions is not changed, but in all examples we tried, this is verified.
 
 \section{Known results about precision of factorization and computation of Puiseux expansions}
 

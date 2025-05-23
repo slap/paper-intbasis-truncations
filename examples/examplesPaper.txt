@@ -26,3 +26,67 @@ LIB "arnoldgit.lib";
 ring R = 0, (x,y), ds;
 poly g = (y17 - x2) + x35;
 determinacyBound(g);  // 35
+
+
+// Milnor number
+
+LIB"integralbasis.lib";
+ring R = 0, (x,y), dp;
+poly g = (y3 - x2);
+milnor(g);
+
+LIB"integralbasis.lib";
+ring S = 3, (x,y), dp;
+poly g = (y3 - x2);
+milnor(g);
+
+LIB"integralbasis.lib";
+ring S = 0, (x,y), dp;
+poly g = (y15 - x12)^4 + 3y68x40;
+milnor(g);
+
+
+LIB"integralbasis.lib";
+ring R = 7, (x,y), dp;
+poly g = (y11 - x2)*(y13-x3)+y25 + x25;
+
+map phi = R,x+y^2-y^6, y+y^2+y^6;
+poly gOrig = phi(g);
+gOrig = substitute(gOrig, x, x+y);
+gOrig = monic(gOrig);  
+milnor(gOrig);
+
+
+
+LIB"integralbasis.lib";
+ring R = 0, (x,y), dp;
+poly g = (y7 - x2)*(y7-x3)+y15 + x15;
+
+map phi = R,x+y^2-y^6, y+y^2+y^6;
+poly gOrig = phi(g);
+gOrig = substitute(gOrig, x, x+y);
+gOrig = monic(gOrig);  
+milnor(gOrig);
+
+
+
+LIB "polyclass.lib";
+LIB "arnoldgit.lib";
+ring R=0,(x,y),ds;
+poly g = (y7 - x2)*(y7-x3)+y15 + x15;
+
+map phi = R,x+y^2-y^6, y+y^2+y^6;
+poly gOrig = phi(g);
+gOrig = substitute(gOrig, x, x+y);
+gOrig = monic(gOrig);  
+
+determinacyBound(gOrig);  // 35
+
+
+LIB "polyclass.lib";
+LIB "arnoldgit.lib";
+LIB"integralbasis.lib";
+ring S = 0, (x,y), dp;
+poly g = (y15 - x12)^4 + 3y68x40;
+milnor(g);
+milnorNumber(g);

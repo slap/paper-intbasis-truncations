@@ -350,7 +350,8 @@ proc milnorNumber(Poly F)
       }
       newton=1;
     }
- }}
+ }
+}
 
 proc newtonNumber(poly f)
 {
