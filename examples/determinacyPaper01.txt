@@ -1,0 +1,170 @@
+cd /mnt/c/Users/Usuario/Documents/GitHub/papers/intbasis-truncations/LIB/
+
+////////////////////////////////////////////////////////////////////////
+
+// Example 1
+
+// We study the determinacy bounds and what is preserved when truncating at this bound
+
+LIB "polyclass.lib";
+LIB "arnoldgit.lib";
+ring R=0,(x,y),ds;
+poly g = (y3 - x2)*(y2-x3)+y26;
+determinacyBound(g);  // 5
+
+map phi = R,x+y^2+x^2+x*y+x^2*y+x*y^3-x^6*y^100, y+y^2+2*x^2+x*y+y*x^2+y^2*x+x*y^4+x^2*y^123;
+poly gOrig = phi(g);
+gOrig = substitute(gOrig, x, x+y);
+//gOrig = monic(gOrig);  
+determinacyBound(gOrig);  // 5
+
+
+////////////////////////////////////////////////////////////////////////
+
+// Example 2
+
+// We check at which degree can we truncate the polynomial f to
+// get the same singular part of the Puiseux expansions
+
+LIB "polyclass.lib";
+LIB "arnoldgit.lib";
+LIB"integralbasis.lib";
+ring R = 0, (x,y), ds;
+poly g = (y11 - x2)*(y13-x3)+y25 + x25;
+
+map phi = R,x+y^2-y^6, y+y^2+y^6;
+poly gOrig = phi(g);
+gOrig = substitute(gOrig, x, x+y);
+gOrig = monic(gOrig);  
+
+determinacyBound(gOrig);  // 35
+
+puiseuxList(gOrig, -1, 1, 2);  // Original Puiseux expansions?
+
+
+// We truncate all monomials of deg > 35 and compare the Puiseux expansions
+int xDegTrunc = 35;
+int yDegTrunc = 35;
+poly gTrunc = gOrig;
+gTrunc = reduce(gTrunc, x^xDegTrunc);
+gTrunc = reduce(gTrunc, y^yDegTrunc);
+puiseuxList(gTrunc, -1, 1, 2);  // Same Puiseux expansions
+
+// We truncate all monomials of deg >= 24 and compare the Puiseux expansions
+int xDegTrunc = 24;
+int yDegTrunc = 24;
+poly gTrunc = gOrig;
+gTrunc = reduce(gTrunc, x^xDegTrunc);
+gTrunc = reduce(gTrunc, y^yDegTrunc);
+puiseuxList(gTrunc, -1, 1, 2);  // Same Puiseux expansions
+
+// We truncate all monomials of deg >= 23 and compare the Puiseux expansions
+int xDegTrunc = 24;
+int yDegTrunc = 24;
+poly gTrunc = gOrig;
+gTrunc = reduce(gTrunc, x^xDegTrunc);
+gTrunc = reduce(gTrunc, y^yDegTrunc);
+puiseuxList(gTrunc, -1, 1, 2);  // Not the same Puiseux expansions!
+
+////////////////////////////////////////////////////////////////////////
+
+// We now check at which degree can we truncate the polynomial f to
+// get the same integral basis.
+
+// We use no optimization since locBasis is not yet implemented.
+
+LIB"integralbasis.lib";
+ring R = 0, (x,y), dp;
+poly g = (y11 - x2)*(y13-x3)+y25 + x25;
+
+map phi = R,x+y^2-y^6, y+y^2+y^6;
+poly gOrig = phi(g);
+
+printlevel = 5;
+
+// We truncate all monomials of deg > 35 and compare the Puiseux expansions
+int xDegTrunc = 35;
+int yDegTrunc = 35;
+poly gTrunc = gOrig;
+gTrunc = reduce(gTrunc, x^xDegTrunc);
+gTrunc = reduce(gTrunc, y^yDegTrunc);
+gTrunc = substitute(gTrunc, x, x+y);
+gTrunc = monic(gTrunc);  
+list l35o = integralBasis(gTrunc, 2, "atOrigin", "locBasis");  // Same local integral basis
+
+// We truncate all monomials of deg >= 24 and compare the Puiseux expansions
+int xDegTrunc = 24;
+int yDegTrunc = 24;
+poly gTrunc = gOrig;
+gTrunc = reduce(gTrunc, x^xDegTrunc);
+gTrunc = reduce(gTrunc, y^yDegTrunc);
+gTrunc = substitute(gTrunc, x, x+y);
+gTrunc = monic(gTrunc);  
+list l24 = integralBasis(gTrunc, 2, "atOrigin", "locBasis", "noOpti");  // Same local integral basis
+
+
+// We truncate all monomials of deg >= 22 and compare the Puiseux expansions
+int xDegTrunc = 21;
+int yDegTrunc = 21;
+poly gTrunc = gOrig;
+gTrunc = reduce(gTrunc, x^xDegTrunc);
+gTrunc = reduce(gTrunc, y^yDegTrunc);
+gTrunc = substitute(gTrunc, x, x+y);
+gTrunc = monic(gTrunc);  
+list l22 = integralBasis(gTrunc, 2, "atOrigin", "locBasis", "noOpti");  // Not the same local integral basis!
+
+////////////////////////////////////////////////////////////////////////
+
+Example 3
+
+////////////////////////////////////////////////////////////////////////
+
+LIB "polyclass.lib";
+LIB "arnoldgit.lib";
+ring S = 0, (x,y), ds;
+poly g = (y15 - x12)^4 + 3y68x40 + y120;
+determinacyBound(g);  // 173
+
+printlevel = 5;
+LIB"integralbasis.lib";
+ring R = 0, (x,y), dp;
+poly g = (y15 - x12)^4 + 3y68x40 + y120;
+list l35o = integralBasis(g, 2, "atOrigin", "locBasis");  // Same local integral basis
+
+
+
+
+
+LIB "polyclass.lib";
+LIB "arnoldgit.lib";
+ring S = 0, (x,y), ds;
+poly g = (y15 - x12)^2 + 3y68x40 + y120;
+determinacyBound(g);  // 143
+
+printlevel = 25;
+LIB"integralbasis.lib";
+ring R = 0, (x,y), dp;
+poly g = (y15 - x12)^2 + 3y68x40 + y120;
+list l35o = integralBasis(g, 2, "atOrigin", "locBasis");  // Same local integral basis
+
+
+
+printlevel = 25;
+LIB"integralbasis.lib";
+ring R = 0, (x,y), dp;
+poly g = (y15 - x12)^2 + 3y68x40 + y120;
+puiseuxList(g, -1, 1, 2);  // Same Puiseux expansions
+
+// BUG
+
+LIB"integralbasis.lib";
+ring R = 0, (x,y), dp;
+poly g = (y15 - x12)^2 + 3y68x40 + y120;
+list l35o = integralBasis(g, 2, "atOrigin", "locBasis", "noOpti"); // Same local integral basis
+
+
+	
+with(algcurves):
+g := (y^15 - x^12)^2 + 3*y^68*x^40 + y^120;
+integral_basis(g,x,y,{x});
+

@@ -1187,7 +1187,7 @@ static proc in_array(list l, def elem)
 }
 
 // The main procedure for the combinatorial approach
-static proc optimizationSteps(f, classes, slopes, degExpand)
+static proc optimizationSteps(poly f, list classes, list slopes, int degExpand, int locBasis)
 {
   int i, k;
   intvec vy = (0,1);
@@ -1214,18 +1214,28 @@ static proc optimizationSteps(f, classes, slopes, degExpand)
   dbprint(dbg, "Step 3 finished");
 
   // 4) We add the unit outside the origin and convert to ib shape.
+  ~;
+  
   ideal IOut;
   int intExp = int(ib[size(ib)-1][1]);
   poly condu = var(1)^intExp;  // The denominator of the integral basis.
 
-  for(k = 0; k < deg(unitPoly, vy); k++)
-  {
-    IOut[k+1] = condu * var(2)^(k);
+  if(locBasis == 0) {
+    for(k = 0; k < deg(unitPoly, vy); k++)
+    {
+      IOut[k+1] = condu * var(2)^(k);
+    }
+    for(k = 1; k <= size(ib) - 1; k++)
+    {
+      IOut[size(IOut)+1] = ib[k][3] * var(1)^(intExp - int(ib[k][1])) * unitPoly;
+    }
+  } else {
+    for(k = 1; k <= size(ib) - 1; k++)
+    {
+      IOut[k] = ib[k][3] * var(1)^(intExp - int(ib[k][1]));
+    }
   }
-  for(k = 1; k <= size(ib) - 1; k++)
-  {
-    IOut[size(IOut)+1] = ib[k][3] * var(1)^(intExp - int(ib[k][1])) * unitPoly;
-  }
+    
   dbprint(dbg, "Step 4 finished");
   return(IOut);
 }
@@ -1357,7 +1367,7 @@ proc sortSegments(list segment);
 
 
 // We compute the local integral basis at f by exhaustive search
-// See "Direct approach in the combinatorial paper.
+// See "Direct approach" in the combinatorial paper.
 proc ibSegment(poly f, list classes, int degExpand)
 {
   int i, j;
@@ -1417,6 +1427,10 @@ proc ibSegment(poly f, list classes, int degExpand)
       ordExpAtPoly[i][j] = ordAtPol(polySet[i], classes[j][1]);
     }
   }
+  
+  "ordExpAtPoly";
+  ordExpAtPoly;
+  ~;
 
   // We compute the integral basis by exhaustive search
   list ib = ibExhaustive(polySet, degPolySet, ordExpAtPoly, degF);
@@ -1753,7 +1767,7 @@ static proc ibAt0(poly f, int locBasis, int optimize)
   if(optimize == 1)
   {
     // Optimization algorithm from scratch
-    ideal IOut = optimizationSteps(f, classes, slopes, degExpand);  // Add locBasis??
+    ideal IOut = optimizationSteps(f, classes, slopes, degExpand, locBasis);  // Add locBasis??
   } else
   {
     ideal IOut = chineseRemainderSteps(f, n, d0, classes, degExpand, locBasis, bestElem, MSelf, md);
@@ -2102,15 +2116,24 @@ static proc chineseRemainderSteps(poly f, int n, int d0, list classes, int degEx
   debug_log_intbas(3, "------Time for merging bases: ", timer - tt);
 
 
-  // We add the unit outside the origin
-  for(k = 0; k < deg(I2LiftedFull[1], vy); k++)
+  if(locBasis == 0)
   {
-    IOut[k+1] = intBas[2]*var(2)^(k);
+    // We add the unit outside the origin
+    for(k = 0; k < deg(I2LiftedFull[1], vy); k++)
+    {
+      IOut[k+1] = intBas[2]*var(2)^(k);
+    }
+    for(k = 1; k <= size(intBas[1]); k++)
+    {
+      IOut[size(IOut)+1] = intBas[1][k]  * I2Lifted[1];
+    }
+  } else {
+    for(k = 1; k <= size(intBas[1]); k++)
+    {
+      IOut[size(IOut)+1] = intBas[1][k];
+    }
   }
-  for(k = 1; k <= size(intBas[1]); k++)
-  {
-    IOut[size(IOut)+1] = intBas[1][k]  * I2Lifted[1];
-  }
+    
   return(IOut);
 }
 ////////////////////////////////////////////////////////////////////////
@@ -2498,6 +2521,8 @@ proc buildFactors(list classes)
   int algExt;
   for(i = 1; i <= size(classes); i++)
   {
+    
+    "i = ", i, classes;
     facs[i] = list();
     ords[i] = list();
     degs[i] = list();
