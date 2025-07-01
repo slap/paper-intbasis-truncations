@@ -1,0 +1,66 @@
+cd /mnt/c/Users/Usuario/Documents/GitHub/papers/intbasis-truncations/LIB/
+
+////////////////////////////////////////////////////////////////////////
+
+//Example 1
+
+//degree: 25
+//Determinacy bound: 33
+//x - integrality exponent: 19
+
+////////////////////////////////////////////////////////////////////////
+
+LIB "polyclass.lib";
+LIB "arnoldgit.lib";
+ring R=0,(x,y),ds;
+poly g = (y5 - x7)*(y7-x4)*(y4-x11)+y20;
+determinacyBound(g);  // 33
+
+LIB"integralbasis.lib";
+list l1 = integralBasis(g, 2, "atOrigin", "locBasis");  // Same local integral basis
+
+////////////////////////////////////////////////////////////////////////
+//Transformation
+
+// degree: 150
+// Determinacy bound: 33
+// x - integrality exponent: 19
+
+map phi = R,x+y^2-y^6, y+y^2+y^6;
+poly gOrig = phi(g);
+determinacyBound(gOrig);  // 33
+
+list l1 = integralBasis(gOrig, 2, "atOrigin", "locBasis"); 
+
+////////////////////////////////////////////////////////////////////////
+// x -> x + y
+
+poly gNoTrunc = substitute(gOrig, x, x+y);
+list l0 = integralBasis(gNoTrunc, 2, "atOrigin", "locBasis"); 
+
+////////////////////////////////////////////////////////////////////////
+//Truncation
+
+int xDegTrunc = 35;
+int yDegTrunc = 35;
+poly gTrunc = gOrig;
+gTrunc = reduce(gTrunc, x^xDegTrunc);
+gTrunc = reduce(gTrunc, y^yDegTrunc);
+gTrunc = substitute(gTrunc, x, x+y);
+gTrunc = monic(gTrunc);  
+
+list l1 = integralBasis(gTrunc, 2, "atOrigin", "locBasis");  // Same local integral basis
+
+
+
+
+int xDegTrunc = 25;
+int yDegTrunc = 25;
+poly gTrunc = gOrig;
+gTrunc = reduce(gTrunc, x^xDegTrunc);
+gTrunc = reduce(gTrunc, y^yDegTrunc);
+gTrunc = substitute(gTrunc, x, x+y);
+gTrunc = monic(gTrunc);  
+
+list l1 = integralBasis(gTrunc, 2, "atOrigin", "locBasis");  // Not the same, but generate the same.
+

@@ -988,3 +988,110 @@ ring R = 0, (x,y), dp;
 poly g = (y15 - x12)^2 + 3y68x40 + y120;
 list l35o = integralBasis(g, 2, "atOrigin", "locBasis", "noOpti"); // Same local integral basis
 l35o;
+LIB "polyclass.lib";
+LIB "arnoldgit.lib";
+ring R=0,(x,y),ds;
+poly g = (y5 - x7)*(y7-x4)*(y4-x11)+y20;
+determinacyBound(g);  // 5
+list l1 = integralBasis(g, 2, "atOrigin", "locBasis");  // Same local integral basis
+LIB"integralbasis.lib";
+list l1 = integralBasis(g, 2, "atOrigin", "locBasis");  // Same local integral basis
+l1;
+g;
+deg(g);
+map phi = R,x+y^2-y^6, y+y^2+y^6;
+poly gOrig = phi(g);
+determinacyBound(gOrig);  // 33
+deg gOrig;
+deg(gOrig);
+list l1 = integralBasis(gOrig, 2, "atOrigin", "locBasis");  // Same local integral basis
+l1;
+int xDegTrunc = 35;
+int yDegTrunc = 35;
+poly gTrunc = gOrig;
+gTrunc = reduce(gTrunc, x^xDegTrunc);
+gTrunc = reduce(gTrunc, y^yDegTrunc);
+gTrunc;
+coeffs(gTrunc);
+int xDegTrunc = 35;
+int yDegTrunc = 35;
+poly gTrunc = gOrig;
+gTrunc = reduce(gTrunc, x^xDegTrunc);
+gTrunc = reduce(gTrunc, y^yDegTrunc);
+gTrunc = substitute(gTrunc, x, x+y);
+gTrunc = monic(gTrunc);  
+list l1 = integralBasis(gTrunc, 2, "atOrigin", "locBasis");  // Same local integral basis
+l1;
+gTrunc0 = substitute(gOrig, x, x+y);
+list l1 = integralBasis(gTrunc0, 2, "atOrigin", "locBasis"); 
+poly gTrunc0 = substitute(gOrig, x, x+y);
+LIB "polyclass.lib";
+LIB "arnoldgit.lib";
+ring R=0,(x,y),ds;
+poly g = (y5 - x7)*(y7-x4)*(y4-x11)+y20;
+determinacyBound(g);  // 33
+LIB"integralbasis.lib";
+list l1 = integralBasis(g, 2, "atOrigin", "locBasis");  // Same local integral basis
+map phi = R,x+y^2-y^6, y+y^2+y^6;
+poly gOrig = phi(g);
+determinacyBound(gOrig);  // 33
+poly gTrunc0 = substitute(gOrig, x, x+y);
+list l1 = integralBasis(gTrunc0, 2, "atOrigin", "locBasis"); 
+l1;
+list l0 = l1;
+poly gNoTrunc = substitute(gOrig, x, x+y);
+list l0 = integralBasis(gNoTrunc, 2, "atOrigin", "locBasis"); 
+//Truncation
+nt xDegTrunc = 35;
+int yDegTrunc = 35;
+poly gTrunc = gOrig;
+gTrunc = reduce(gTrunc, x^xDegTrunc);
+gTrunc = reduce(gTrunc, y^yDegTrunc);
+gTrunc = substitute(gTrunc, x, x+y);
+gTrunc = monic(gTrunc);  
+list l1 = integralBasis(gTrunc, 2, "atOrigin", "locBasis");  // Same local integral basis
+l1;
+l0;
+l0;
+l1;
+reduce(l0, l1);
+reduce(l0[0], l1[0]);
+l0[1]
+;
+reduce(l0[1], l1[1]);
+reduce(l0[1], groebner(l1[1]));
+reduce(l1[1], groebner(l0[1]));
+int xDegTrunc = 19;
+int yDegTrunc = 19;
+poly gTrunc = gOrig;
+gTrunc = reduce(gTrunc, x^xDegTrunc);
+gTrunc = reduce(gTrunc, y^yDegTrunc);
+gTrunc = substitute(gTrunc, x, x+y);
+gTrunc = monic(gTrunc);  
+list l1 = integralBasis(gTrunc, 2, "atOrigin", "locBasis");  // Same local integral basis
+[200~LIB "polyclass.lib";
+LIB "arnoldgit.lib";
+ring R=0,(x,y),ds;
+poly g = (y5 - x7)*(y7-x4)*(y4-x11)+y20;
+determinacyBound(g);  // 33
+LIB"integralbasis.lib";
+list l1 = integralBasis(g, 2, "atOrigin", "locBasis");  // Same local integral basis
+map phi = R,x+y^2-y^6, y+y^2+y^6;
+poly gOrig = phi(g);
+determinacyBound(gOrig);  // 33
+
+poly gNoTrunc = substitute(gOrig, x, x+y);
+list l0 = integralBasis(gNoTrunc, 2, "atOrigin", "locBasis"); 
+
+int xDegTrunc = 22;
+int yDegTrunc = 22;
+poly gTrunc = gOrig;
+gTrunc = reduce(gTrunc, x^xDegTrunc);
+gTrunc = reduce(gTrunc, y^yDegTrunc);
+gTrunc = substitute(gTrunc, x, x+y);
+gTrunc = monic(gTrunc);  
+
+list l1 = integralBasis(gTrunc, 2, "atOrigin", "locBasis");  // Same local integral basis
+
+;
+;
