@@ -1,0 +1,26 @@
+cd /mnt/c/Users/Usuario/Documents/GitHub/papers/intbasis-truncations/LIB/
+
+
+// Example 2
+
+// We check at which degree can we truncate the polynomial f to
+// get the same singular part of the Puiseux expansions
+
+LIB"integralbasis.lib";
+ring R = 0, (x,y), ds;
+poly g = (y11 - x2)*(y13-x3)+y25 + x25;
+puiseuxList(g, -1, 1, 2);  // Original Puiseux expansions?
+
+
+map phi = R,x+y^2-y^6, y+y^2+y^6;
+poly gOrig = phi(g);
+gOrig = substitute(gOrig, x, x+y);
+gOrig = monic(gOrig);  
+
+puiseuxList(gOrig, -1, 1, 2);  // Original Puiseux expansions?
+
+
+
+gOrig = substitute(g, y, 7x + 2x^2 - 3x*y^2 +y);
+//gOrig = monic(gOrig);  
+puiseuxList(gOrig, -1, 1, 2);  // Original Puiseux expansions?
